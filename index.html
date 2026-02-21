@@ -1061,7 +1061,14 @@
 
             try {
                 const snapshot = await db.ref('authorized-emails').once('value');
-                const authorizedEmails = snapshot.val() || {};
+                let authorizedEmails = snapshot.val() || {};
+                
+                // Auto-seed admin email if no authorized emails exist
+                if (Object.keys(authorizedEmails).length === 0 && email === 'kitboonssocial@gmail.com') {
+                    const key = email.replace(/\./g, '_');
+                    await db.ref(`authorized-emails/${key}`).set({ email, role: 'admin', addedAt: Date.now() });
+                    authorizedEmails[key] = { email, role: 'admin' };
+                }
                 
                 if (authorizedEmails[email.replace(/\./g, '_')]) {
                     currentUser = { 
