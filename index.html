@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contractor Dashboard</title>
+    <title>Employee Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -11,524 +11,284 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --bg: #0a0a0f;
-            --bg-elevated: #16161d;
-            --bg-card: #1e1e28;
-            --border: #2a2a35;
-            --text: #e8e8f0;
-            --text-dim: #8a8a9e;
-            --accent-jaiden: #8b5cf6;
-            --accent-abhishek: #10b981;
-            --accent-muhammad: #f59e0b;
-            --status-green: #10b981;
-            --status-yellow: #f59e0b;
-            --status-red: #ef4444;
-            --status-gray: #6b7280;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.5;
         }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            padding: 20px;
-            padding-bottom: 100px;
+        .container {
             max-width: 1400px;
             margin: 0 auto;
+            padding: 20px;
         }
 
+        /* Header */
         header {
-            margin-bottom: 32px;
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
         }
 
         h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 8px;
+            font-size: 20px;
+            font-weight: 600;
+            padding: 16px 0;
         }
 
-        .subtitle {
-            color: var(--text-dim);
+        .export-btn {
+            background: #238636;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
             font-size: 14px;
+            font-weight: 500;
+            min-height: 44px;
         }
 
-        .nav-tabs {
+        .export-btn:hover {
+            background: #2ea043;
+        }
+
+        /* Tabs */
+        .tabs {
             display: flex;
             gap: 8px;
-            margin-bottom: 24px;
+            background: #161b22;
+            padding: 0 20px;
+            max-width: 1400px;
+            margin: 0 auto;
             overflow-x: auto;
-            padding-bottom: 8px;
         }
 
         .tab {
-            padding: 10px 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            background: transparent;
+            color: #7d8590;
+            border: none;
+            padding: 12px 20px;
             cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
             font-size: 14px;
             font-weight: 500;
-        }
-
-        .tab.active {
-            background: var(--bg-elevated);
-            border-color: var(--accent-jaiden);
-            color: var(--accent-jaiden);
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+            min-height: 44px;
         }
 
         .tab:hover {
-            border-color: var(--accent-jaiden);
+            color: #c9d1d9;
+            border-bottom-color: #30363d;
         }
 
-        .view {
+        .tab.active {
+            color: #fff;
+            border-bottom-color: #f78166;
+        }
+
+        /* Tab Content */
+        .tab-content {
             display: none;
         }
 
-        .view.active {
+        .tab-content.active {
             display: block;
-            animation: fadeIn 0.3s;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Employee Cards */
-        .employees-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-
-        .employee-card {
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-
-        .employee-card:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent);
-        }
-
-        .employee-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--accent);
-        }
-
-        .employee-card[data-employee="jaiden"] {
-            --accent: var(--accent-jaiden);
-        }
-        .employee-card[data-employee="abhishek"] {
-            --accent: var(--accent-abhishek);
-        }
-        .employee-card[data-employee="muhammad"] {
-            --accent: var(--accent-muhammad);
-        }
-
-        .employee-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 12px;
-        }
-
-        .employee-name {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .employee-role {
-            font-size: 12px;
-            color: var(--text-dim);
-            margin-top: 2px;
-        }
-
-        .status-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .status-indicator.available {
-            background: var(--status-green);
-            box-shadow: 0 0 12px var(--status-green);
-        }
-
-        .status-indicator.busy {
-            background: var(--status-yellow);
-            box-shadow: 0 0 12px var(--status-yellow);
-        }
-
-        .status-indicator.offline {
-            background: var(--status-red);
-        }
-
-        .employee-info {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 16px;
-            font-size: 13px;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            color: var(--text-dim);
-        }
-
-        .info-value {
-            color: var(--text);
-            font-weight: 500;
-        }
-
-        .status-controls {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 6px;
-            margin-bottom: 12px;
-        }
-
-        .status-btn {
-            padding: 8px;
-            border: 1px solid var(--border);
-            background: var(--bg-elevated);
+        /* Cards */
+        .card {
+            background: #161b22;
+            border: 1px solid #30363d;
             border-radius: 6px;
-            cursor: pointer;
-            font-size: 11px;
-            transition: all 0.2s;
-            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
         }
 
-        .status-btn:hover {
-            border-color: var(--accent);
-        }
-
-        .status-btn.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            font-weight: 600;
-        }
-
-        .contact-btns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
-        .contact-btn {
-            padding: 10px;
-            border: 1px solid var(--border);
-            background: var(--bg-elevated);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.2s;
-            font-weight: 500;
-            text-decoration: none;
-            color: var(--text);
-            text-align: center;
-        }
-
-        .contact-btn:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-
-        /* Clients Section */
-        .clients-section {
-            margin-top: 32px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .section-title {
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        .add-btn {
-            padding: 10px 20px;
-            background: var(--accent-jaiden);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-
-        .add-btn:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
-
-        .clients-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 16px;
-        }
-
-        .client-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            cursor: move;
-            transition: all 0.2s;
-        }
-
-        .client-card:hover {
-            border-color: var(--accent-jaiden);
-            transform: translateY(-2px);
-        }
-
-        .client-card.unassigned {
-            border-left: 4px solid var(--status-yellow);
-        }
-
-        .client-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 12px;
-        }
-
-        .client-name {
+        .card h2 {
             font-size: 16px;
             font-weight: 600;
+            margin-bottom: 16px;
+            color: #fff;
         }
 
-        .client-plan {
-            font-size: 12px;
-            padding: 4px 8px;
-            background: var(--bg-elevated);
-            border-radius: 4px;
-            color: var(--accent-jaiden);
-        }
-
-        .client-info {
-            font-size: 13px;
-            color: var(--text-dim);
-            margin-bottom: 12px;
-        }
-
-        .client-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-        }
-
-        .assigned-to {
-            color: var(--text-dim);
-        }
-
-        .assigned-name {
-            color: var(--text);
-            font-weight: 500;
-        }
-
-        .assign-select {
-            padding: 6px 12px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
+        /* Buttons */
+        .btn {
+            background: #21262d;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            padding: 8px 16px;
             border-radius: 6px;
-            color: var(--text);
-            font-size: 13px;
             cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            min-height: 44px;
+            min-width: 44px;
         }
 
-        /* Week View */
-        .week-grid {
-            overflow-x: auto;
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 16px;
+        .btn:hover {
+            background: #30363d;
         }
 
-        .week-table {
+        .btn-primary {
+            background: #1f6feb;
+            border-color: #1f6feb;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #388bfd;
+        }
+
+        .btn-danger {
+            background: #da3633;
+            border-color: #da3633;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #e5534b;
+        }
+
+        .btn-success {
+            background: #238636;
+            border-color: #238636;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #2ea043;
+        }
+
+        /* Table */
+        table {
             width: 100%;
-            min-width: 800px;
             border-collapse: collapse;
         }
 
-        .week-table th {
+        th, td {
             text-align: left;
             padding: 12px;
-            font-size: 13px;
-            color: var(--text-dim);
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #21262d;
         }
 
-        .week-table td {
-            padding: 12px;
-            border-bottom: 1px solid var(--border);
-            vertical-align: top;
-        }
-
-        .week-table tr:hover td {
-            background: var(--bg-elevated);
-        }
-
-        .day-cell {
-            min-height: 60px;
-        }
-
-        .call-block {
-            padding: 6px 10px;
-            border-radius: 6px;
+        th {
+            font-weight: 600;
+            color: #7d8590;
             font-size: 12px;
-            margin-bottom: 4px;
-            background: var(--accent);
-            border-left: 3px solid var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .call-block.jaiden {
-            --accent: var(--accent-jaiden);
-            background: rgba(139, 92, 246, 0.2);
+        td {
+            font-size: 14px;
         }
 
-        .call-block.abhishek {
-            --accent: var(--accent-abhishek);
-            background: rgba(16, 185, 129, 0.2);
+        tr:hover {
+            background: #161b22;
         }
 
-        .call-block.muhammad {
-            --accent: var(--accent-muhammad);
-            background: rgba(245, 158, 11, 0.2);
+        /* Forms */
+        input, textarea, select {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 100%;
+            margin-bottom: 12px;
+            font-family: inherit;
+            min-height: 44px;
         }
 
-        /* Pay Tracker */
-        .pay-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 16px;
+        textarea {
+            min-height: 120px;
+            resize: vertical;
         }
 
-        .pay-card {
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #1f6feb;
         }
 
-        .pay-card::before {
-            content: '';
+        label {
             display: block;
-            height: 4px;
-            background: var(--accent);
-            margin: -20px -20px 16px -20px;
-            border-radius: 12px 12px 0 0;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #7d8590;
         }
 
-        .pay-stats {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .form-group {
             margin-bottom: 16px;
         }
 
-        .pay-stat {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-        }
-
-        .pay-label {
-            color: var(--text-dim);
-        }
-
-        .pay-value {
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        .pay-total {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 12px;
-        }
-
-        .mark-paid-btn {
-            width: 100%;
-            padding: 12px;
-            background: var(--accent);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .mark-paid-btn:hover {
-            opacity: 0.9;
-        }
-
-        .mark-paid-btn.paid {
-            background: var(--status-green);
-        }
-
-        /* Performance */
-        .perf-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 16px;
-        }
-
-        .perf-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
+        /* Status Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
             border-radius: 12px;
-            padding: 20px;
-            text-align: center;
+            font-size: 12px;
+            font-weight: 500;
         }
 
-        .perf-name {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
+        .badge-available {
+            background: rgba(35, 134, 54, 0.2);
+            color: #3fb950;
         }
 
-        .perf-rating {
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 4px;
+        .badge-busy {
+            background: rgba(212, 167, 44, 0.2);
+            color: #d4a72c;
         }
 
-        .perf-calls {
-            font-size: 14px;
-            color: var(--text-dim);
+        .badge-offline {
+            background: rgba(110, 118, 129, 0.2);
+            color: #6e7681;
         }
 
-        .stars {
-            font-size: 20px;
-            margin-bottom: 8px;
+        .badge-unassigned {
+            background: rgba(110, 118, 129, 0.2);
+            color: #6e7681;
+        }
+
+        .badge-assigned {
+            background: rgba(31, 111, 235, 0.2);
+            color: #58a6ff;
+        }
+
+        .badge-scheduled {
+            background: rgba(212, 167, 44, 0.2);
+            color: #d4a72c;
+        }
+
+        .badge-completed {
+            background: rgba(35, 134, 54, 0.2);
+            color: #3fb950;
+        }
+
+        .badge-paid {
+            background: rgba(35, 134, 54, 0.2);
+            color: #3fb950;
+        }
+
+        .badge-unpaid {
+            background: rgba(218, 54, 51, 0.2);
+            color: #f85149;
         }
 
         /* Modal */
@@ -537,694 +297,1055 @@
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
             z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
 
-        .modal.active {
-            display: flex;
-            animation: fadeIn 0.2s;
-        }
-
         .modal-content {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
             padding: 24px;
-            max-width: 500px;
+            max-width: 600px;
             width: 100%;
-            animation: slideUp 0.3s;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-header {
-            font-size: 20px;
-            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
         }
 
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 13px;
-            color: var(--text-dim);
-            margin-bottom: 6px;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 14px;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent-jaiden);
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-        }
-
-        .modal-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
+        .modal-header h3 {
+            font-size: 18px;
             font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #7d8590;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            color: #c9d1d9;
+        }
+
+        /* Schedule Grid */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .employee-schedule {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+        }
+
+        .employee-schedule h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .call-item {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .call-item.today {
+            border-left: 3px solid #f78166;
+        }
+
+        .call-time {
+            color: #7d8590;
+            font-size: 12px;
+        }
+
+        /* Summary Stats */
+        .summary {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .summary span {
+            color: #f85149;
+        }
+
+        /* Links */
+        a {
+            color: #58a6ff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 12px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+
+            .schedule-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Action Buttons */
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: #7d8590;
+            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 14px;
+            min-height: 32px;
+            min-width: 32px;
+        }
+
+        .icon-btn:hover {
+            color: #58a6ff;
+        }
+
+        .client-list {
+            list-style: none;
+        }
+
+        .client-item {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 12px;
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .modal-btn.primary {
-            background: var(--accent-jaiden);
-            color: white;
+        .client-item:hover {
+            border-color: #58a6ff;
         }
 
-        .modal-btn.secondary {
-            background: var(--bg-elevated);
-            color: var(--text);
-            border: 1px solid var(--border);
+        .client-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
         }
 
-        .modal-btn:hover {
-            opacity: 0.9;
+        .client-name {
+            font-weight: 600;
+            font-size: 15px;
         }
 
-        .suggestion-box {
-            background: rgba(139, 92, 246, 0.1);
-            border: 1px solid var(--accent-jaiden);
-            border-radius: 8px;
-            padding: 12px;
+        .client-meta {
             font-size: 13px;
-            margin-bottom: 16px;
-            color: var(--accent-jaiden);
+            color: #7d8590;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
-        @media (max-width: 768px) {
-            body {
-                padding: 12px;
-                padding-bottom: 80px;
-            }
+        .week-summary {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
 
-            h1 {
-                font-size: 24px;
-            }
+        .week-stat {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+        }
 
-            .employees-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .clients-grid {
-                grid-template-columns: 1fr;
-            }
+        .week-stat strong {
+            color: #fff;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>🚀 Contractor Dashboard</h1>
-        <div class="subtitle">Manage your team effortlessly</div>
+        <div class="header-content">
+            <h1>🎯 Employee Dashboard</h1>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn" onclick="importData()">Import</button>
+                <button class="export-btn" onclick="exportData()">Export</button>
+            </div>
+        </div>
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('team')">Team</button>
+            <button class="tab" onclick="switchTab('clients')">Clients</button>
+            <button class="tab" onclick="switchTab('schedule')">Schedule</button>
+            <button class="tab" onclick="switchTab('payments')">Payments</button>
+        </div>
     </header>
 
-    <nav class="nav-tabs">
-        <div class="tab active" onclick="switchTab('dashboard')">📊 Dashboard</div>
-        <div class="tab" onclick="switchTab('week')">📅 This Week</div>
-        <div class="tab" onclick="switchTab('pay')">💰 Pay Tracker</div>
-        <div class="tab" onclick="switchTab('performance')">⭐ Performance</div>
-    </nav>
-
-    <!-- Dashboard View -->
-    <div id="dashboard" class="view active">
-        <div class="employees-grid" id="employeesGrid"></div>
-
-        <div class="clients-section">
-            <div class="section-header">
-                <h2 class="section-title">Clients</h2>
-                <button class="add-btn" onclick="openAddClientModal()">+ Add Client</button>
+    <div class="container">
+        <!-- Team Tab -->
+        <div id="team" class="tab-content active">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h2>Team Members</h2>
+                    <button class="btn-primary btn" onclick="openEmployeeModal()">+ Add Employee</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="employeeTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Contact</th>
+                                <th>Timezone</th>
+                                <th>Rate/Call</th>
+                                <th>Availability</th>
+                                <th>Payment Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeeTableBody">
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="clients-grid" id="clientsGrid"></div>
+        </div>
+
+        <!-- Clients Tab -->
+        <div id="clients" class="tab-content">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h2>Clients & Briefings</h2>
+                    <button class="btn-primary btn" onclick="openClientModal()">+ Add Client</button>
+                </div>
+                <ul class="client-list" id="clientList">
+                </ul>
+            </div>
+        </div>
+
+        <!-- Schedule Tab -->
+        <div id="schedule" class="tab-content">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h2>Week Schedule</h2>
+                    <button class="btn-primary btn" onclick="openCallModal()">+ Schedule Call</button>
+                </div>
+                <div class="week-summary" id="weekSummary"></div>
+                <div class="schedule-grid" id="scheduleGrid"></div>
+            </div>
+        </div>
+
+        <!-- Payments Tab -->
+        <div id="payments" class="tab-content">
+            <div class="summary" id="paymentSummary">
+                Total unpaid: <span>$0</span>
+            </div>
+            <div class="card">
+                <h2>Payment Tracking</h2>
+                <div style="overflow-x: auto;">
+                    <table id="paymentTable">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Calls This Month</th>
+                                <th>Rate/Call</th>
+                                <th>Total Owed</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="paymentTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Week View -->
-    <div id="week" class="view">
-        <div class="week-grid">
-            <table class="week-table" id="weekTable"></table>
-        </div>
-    </div>
-
-    <!-- Pay Tracker -->
-    <div id="pay" class="view">
-        <div class="pay-cards" id="payCards"></div>
-    </div>
-
-    <!-- Performance -->
-    <div id="performance" class="view">
-        <div class="perf-cards" id="perfCards"></div>
-    </div>
-
-    <!-- Add Client Modal -->
-    <div id="addClientModal" class="modal">
+    <!-- Employee Modal -->
+    <div id="employeeModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">Add New Client</div>
-            <div id="suggestion" class="suggestion-box"></div>
-            <form id="addClientForm">
+            <div class="modal-header">
+                <h3 id="employeeModalTitle">Add Employee</h3>
+                <button class="close-btn" onclick="closeEmployeeModal()">&times;</button>
+            </div>
+            <form id="employeeForm" onsubmit="saveEmployee(event)">
+                <input type="hidden" id="employeeId">
                 <div class="form-group">
-                    <label class="form-label">Client Name</label>
-                    <input type="text" class="form-input" id="clientName" required>
+                    <label>Name</label>
+                    <input type="text" id="employeeName" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Plan</label>
-                    <input type="text" class="form-input" id="clientPlan" placeholder="e.g., Pro $998">
+                    <label>Role</label>
+                    <input type="text" id="employeeRole" placeholder="e.g., Partner, Contractor" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Need</label>
-                    <input type="text" class="form-input" id="clientNeed" placeholder="Setup call, troubleshoot, etc.">
+                    <label>Contact Type</label>
+                    <select id="employeeContactType">
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="telegram">Telegram</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Preferred Time</label>
-                    <input type="text" class="form-input" id="clientTime" placeholder="e.g., Tomorrow 3pm">
+                    <label>Contact Number/Username</label>
+                    <input type="text" id="employeeContact" placeholder="e.g., +1234567890" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Assign To</label>
-                    <select class="form-input" id="clientAssign">
+                    <label>Timezone</label>
+                    <input type="text" id="employeeTimezone" placeholder="e.g., PST, UTC+5:30" required>
+                </div>
+                <div class="form-group">
+                    <label>Rate per Call ($)</label>
+                    <input type="number" id="employeeRate" min="0" step="1" required>
+                </div>
+                <div class="form-group">
+                    <label>Availability</label>
+                    <select id="employeeAvailability">
+                        <option value="available">Available</option>
+                        <option value="busy">Busy</option>
+                        <option value="offline">Offline</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button type="button" class="btn" onclick="closeEmployeeModal()">Cancel</button>
+                    <button type="submit" class="btn-success btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Client Modal -->
+    <div id="clientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="clientModalTitle">Add Client</h3>
+                <button class="close-btn" onclick="closeClientModal()">&times;</button>
+            </div>
+            <form id="clientForm" onsubmit="saveClient(event)">
+                <input type="hidden" id="clientId">
+                <div class="form-group">
+                    <label>Client Name</label>
+                    <input type="text" id="clientName" required>
+                </div>
+                <div class="form-group">
+                    <label>Plan</label>
+                    <select id="clientPlan">
+                        <option value="49">Troubleshoot - $49</option>
+                        <option value="99">Basic - $99</option>
+                        <option value="199">Pro - $199</option>
+                        <option value="249">Premium - $249</option>
+                        <option value="custom">Custom Amount</option>
+                    </select>
+                </div>
+                <div class="form-group" id="customPlanGroup" style="display: none;">
+                    <label>Custom Amount ($)</label>
+                    <input type="number" id="clientCustomPlan" min="0" step="1">
+                </div>
+                <div class="form-group">
+                    <label>Brief</label>
+                    <textarea id="clientBrief" placeholder="Paste the full client brief here..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Assign to Employee</label>
+                    <select id="clientAssignee">
                         <option value="">Unassigned</option>
                     </select>
                 </div>
-                <div class="modal-actions">
-                    <button type="button" class="modal-btn secondary" onclick="closeAddClientModal()">Cancel</button>
-                    <button type="submit" class="modal-btn primary">Add Client</button>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="clientStatus">
+                        <option value="unassigned">Unassigned</option>
+                        <option value="assigned">Assigned</option>
+                        <option value="scheduled">Call Scheduled</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button type="button" class="btn" onclick="closeClientModal()">Cancel</button>
+                    <button type="submit" class="btn-success btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Client Detail Modal -->
+    <div id="clientDetailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="clientDetailName"></h3>
+                <button class="close-btn" onclick="closeClientDetailModal()">&times;</button>
+            </div>
+            <div id="clientDetailContent"></div>
+            <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px;">
+                <button class="btn" onclick="closeClientDetailModal()">Close</button>
+                <button class="btn-primary btn" onclick="editClientFromDetail()">Edit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call Modal -->
+    <div id="callModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Schedule Call</h3>
+                <button class="close-btn" onclick="closeCallModal()">&times;</button>
+            </div>
+            <form id="callForm" onsubmit="saveCall(event)">
+                <input type="hidden" id="callId">
+                <div class="form-group">
+                    <label>Employee</label>
+                    <select id="callEmployee" required>
+                        <option value="">Select employee...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Client Name</label>
+                    <input type="text" id="callClient" required>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="callDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Time</label>
+                    <input type="time" id="callTime" required>
+                </div>
+                <div class="form-group">
+                    <label>Duration (minutes)</label>
+                    <input type="number" id="callDuration" min="15" step="15" value="30" required>
+                </div>
+                <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button type="button" class="btn" onclick="closeCallModal()">Cancel</button>
+                    <button type="submit" class="btn-success btn">Save</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        // Initialize data
+        // Data structure
         let data = {
-            employees: [
-                {
-                    id: 'jaiden',
-                    name: 'Jaiden',
-                    role: 'Partner',
-                    timezone: 'PST',
-                    timezoneOffset: -8,
-                    rate: 30,
-                    status: 'available',
-                    lastActive: new Date().toISOString(),
-                    whatsapp: '+1234567890',
-                    telegram: '@jaiden',
-                    totalCalls: 12,
-                    rating: 4.8
-                },
-                {
-                    id: 'abhishek',
-                    name: 'Abhishek V.',
-                    role: 'Contractor',
-                    timezone: 'IST',
-                    timezoneOffset: 5.5,
-                    rate: 20,
-                    status: 'available',
-                    lastActive: new Date().toISOString(),
-                    whatsapp: '+91234567890',
-                    telegram: '@abhishek',
-                    totalCalls: 8,
-                    rating: 4.6
-                },
-                {
-                    id: 'muhammad',
-                    name: 'Muhammad',
-                    role: 'Contractor',
-                    timezone: 'PKT',
-                    timezoneOffset: 5,
-                    rate: 20,
-                    status: 'offline',
-                    lastActive: new Date(Date.now() - 3600000).toISOString(),
-                    whatsapp: '+92234567890',
-                    telegram: '@muhammad',
-                    totalCalls: 5,
-                    rating: 4.4
-                }
-            ],
-            clients: [
-                {
-                    id: 'c1',
-                    name: 'Indrayudh',
-                    plan: 'Pro $998',
-                    need: 'Setup call',
-                    preferredTime: 'Tomorrow',
-                    assignedTo: 'jaiden',
-                    completed: false,
-                    rating: null,
-                    scheduledDate: new Date(Date.now() + 86400000).toISOString()
-                },
-                {
-                    id: 'c2',
-                    name: 'Ali Howard',
-                    plan: 'Basic $99',
-                    need: 'Setup call',
-                    preferredTime: 'ASAP',
-                    assignedTo: null,
-                    completed: false,
-                    rating: null
-                },
-                {
-                    id: 'c3',
-                    name: 'Russie Bot',
-                    plan: '$49 troubleshoot',
-                    need: 'Troubleshoot',
-                    preferredTime: 'Flexible',
-                    assignedTo: null,
-                    completed: false,
-                    rating: null
-                }
-            ],
-            payments: []
+            employees: [],
+            clients: [],
+            calls: [],
+            payments: {}
         };
 
-        // Load from localStorage
-        function loadData() {
-            const saved = localStorage.getItem('contractorDashboard');
+        // Initialize with pre-populated data
+        function initializeData() {
+            const saved = localStorage.getItem('employeeDashboard');
             if (saved) {
-                try {
-                    data = JSON.parse(saved);
-                } catch (e) {
-                    console.error('Failed to load data:', e);
-                }
+                data = JSON.parse(saved);
+            } else {
+                // Pre-populated data
+                data = {
+                    employees: [
+                        {
+                            id: '1',
+                            name: 'Jaiden',
+                            role: 'Partner',
+                            contactType: 'whatsapp',
+                            contact: '+1234567890',
+                            timezone: 'PST',
+                            rate: 30,
+                            availability: 'available',
+                            paid: true
+                        },
+                        {
+                            id: '2',
+                            name: 'Abhishek V.',
+                            role: 'Contractor',
+                            contactType: 'whatsapp',
+                            contact: '+919876543210',
+                            timezone: 'UTC+5:30',
+                            rate: 20,
+                            availability: 'available',
+                            paid: false
+                        },
+                        {
+                            id: '3',
+                            name: 'Muhammad',
+                            role: 'Contractor',
+                            contactType: 'whatsapp',
+                            contact: '+923001234567',
+                            timezone: 'UTC+5',
+                            rate: 20,
+                            availability: 'offline',
+                            paid: true
+                        }
+                    ],
+                    clients: [
+                        {
+                            id: '1',
+                            name: 'Indrayudh',
+                            plan: 998,
+                            brief: 'Lead gen business looking to scale. Interested in Pro plan with upsell opportunities. Has existing funnel but needs optimization for better conversion rates. Currently running Facebook ads with 2-3% CTR. Budget: $5k/month for ads. Looking to 3x leads in next quarter.',
+                            assignee: '1',
+                            status: 'scheduled'
+                        },
+                        {
+                            id: '2',
+                            name: 'Ali Howard',
+                            plan: 99,
+                            brief: 'E-commerce startup selling sustainable fashion. Just launched 2 months ago. Needs help with Shopify setup and basic funnel. First-time entrepreneur, very motivated. Monthly revenue: ~$3k. Goal: reach $10k/month by Q3.',
+                            assignee: '',
+                            status: 'unassigned'
+                        },
+                        {
+                            id: '3',
+                            name: 'Russie Bot',
+                            plan: 49,
+                            brief: 'Troubleshoot session needed. Having issues with Claude API configuration. Model keeps timing out on longer responses. Using Claude Sonnet 3.5. Needs quick fix for production deployment scheduled next week.',
+                            assignee: '',
+                            status: 'unassigned'
+                        }
+                    ],
+                    calls: [
+                        {
+                            id: '1',
+                            employeeId: '1',
+                            clientName: 'Indrayudh',
+                            date: '2026-02-22',
+                            time: '10:00',
+                            duration: 60
+                        }
+                    ],
+                    payments: {
+                        '1': { callsCompleted: 0, paid: true },
+                        '2': { callsCompleted: 3, paid: false },
+                        '3': { callsCompleted: 0, paid: true }
+                    }
+                };
+                saveData();
             }
         }
 
-        // Save to localStorage
+        // Save data to localStorage
         function saveData() {
-            localStorage.setItem('contractorDashboard', JSON.stringify(data));
+            localStorage.setItem('employeeDashboard', JSON.stringify(data));
         }
 
-        // Get local time for employee
-        function getEmployeeTime(employee) {
-            const now = new Date();
-            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-            const employeeTime = new Date(utc + (3600000 * employee.timezoneOffset));
-            return employeeTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-        }
-
-        // Get relative time
-        function getRelativeTime(isoString) {
-            const now = Date.now();
-            const then = new Date(isoString).getTime();
-            const diff = now - then;
+        // Tab switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             
-            if (diff < 60000) return 'Just now';
-            if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
-            if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
-            return `${Math.floor(diff / 86400000)}d ago`;
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+
+            if (tabName === 'schedule') renderSchedule();
+            if (tabName === 'payments') renderPayments();
         }
 
-        // Render employees
+        // Employee management
         function renderEmployees() {
-            const grid = document.getElementById('employeesGrid');
-            grid.innerHTML = data.employees.map(emp => {
-                const callsThisWeek = data.clients.filter(c => 
-                    c.assignedTo === emp.id && 
-                    c.completed && 
-                    new Date(c.completedDate) > new Date(Date.now() - 7 * 86400000)
-                ).length;
+            const tbody = document.getElementById('employeeTableBody');
+            tbody.innerHTML = '';
 
-                return `
-                    <div class="employee-card" data-employee="${emp.id}">
-                        <div class="employee-header">
-                            <div>
-                                <div class="employee-name">${emp.name}</div>
-                                <div class="employee-role">${emp.role}</div>
-                            </div>
-                            <div class="status-indicator ${emp.status}"></div>
-                        </div>
-                        
-                        <div class="employee-info">
-                            <div class="info-row">
-                                <span>Local Time</span>
-                                <span class="info-value">${getEmployeeTime(emp)}</span>
-                            </div>
-                            <div class="info-row">
-                                <span>Last Active</span>
-                                <span class="info-value">${getRelativeTime(emp.lastActive)}</span>
-                            </div>
-                            <div class="info-row">
-                                <span>This Week</span>
-                                <span class="info-value">${callsThisWeek} calls</span>
-                            </div>
-                            <div class="info-row">
-                                <span>Rate</span>
-                                <span class="info-value">$${emp.rate}/call</span>
-                            </div>
-                        </div>
+            data.employees.forEach(emp => {
+                const contactLink = emp.contactType === 'whatsapp' 
+                    ? `https://wa.me/${emp.contact.replace(/[^0-9]/g, '')}`
+                    : `https://t.me/${emp.contact.replace('@', '')}`;
 
-                        <div class="status-controls">
-                            <button class="status-btn ${emp.status === 'available' ? 'active' : ''}" 
-                                onclick="setStatus('${emp.id}', 'available')">🟢 Free</button>
-                            <button class="status-btn ${emp.status === 'busy' ? 'active' : ''}" 
-                                onclick="setStatus('${emp.id}', 'busy')">🟡 Busy</button>
-                            <button class="status-btn ${emp.status === 'offline' ? 'active' : ''}" 
-                                onclick="setStatus('${emp.id}', 'offline')">🔴 Off</button>
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${emp.name}</strong></td>
+                    <td>${emp.role}</td>
+                    <td><a href="${contactLink}" target="_blank">${emp.contactType === 'whatsapp' ? 'WhatsApp' : 'Telegram'}</a></td>
+                    <td>${emp.timezone}</td>
+                    <td>$${emp.rate}</td>
+                    <td><span class="badge badge-${emp.availability}">${emp.availability}</span></td>
+                    <td><span class="badge badge-${emp.paid ? 'paid' : 'unpaid'}">${emp.paid ? 'Paid ✅' : 'Unpaid ❌'}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="icon-btn" onclick="editEmployee('${emp.id}')">✏️</button>
+                            <button class="icon-btn" onclick="deleteEmployee('${emp.id}')">🗑️</button>
                         </div>
-
-                        <div class="contact-btns">
-                            <a href="https://wa.me/${emp.whatsapp}" target="_blank" class="contact-btn">
-                                💬 WhatsApp
-                            </a>
-                            <a href="https://t.me/${emp.telegram}" target="_blank" class="contact-btn">
-                                ✈️ Telegram
-                            </a>
-                        </div>
-                    </div>
+                    </td>
                 `;
-            }).join('');
+                tbody.appendChild(row);
+            });
         }
 
-        // Set employee status
-        function setStatus(employeeId, status) {
-            const emp = data.employees.find(e => e.id === employeeId);
-            if (emp) {
-                emp.status = status;
-                emp.lastActive = new Date().toISOString();
+        function openEmployeeModal(id = null) {
+            const modal = document.getElementById('employeeModal');
+            const form = document.getElementById('employeeForm');
+            form.reset();
+
+            if (id) {
+                const emp = data.employees.find(e => e.id === id);
+                document.getElementById('employeeModalTitle').textContent = 'Edit Employee';
+                document.getElementById('employeeId').value = emp.id;
+                document.getElementById('employeeName').value = emp.name;
+                document.getElementById('employeeRole').value = emp.role;
+                document.getElementById('employeeContactType').value = emp.contactType;
+                document.getElementById('employeeContact').value = emp.contact;
+                document.getElementById('employeeTimezone').value = emp.timezone;
+                document.getElementById('employeeRate').value = emp.rate;
+                document.getElementById('employeeAvailability').value = emp.availability;
+            } else {
+                document.getElementById('employeeModalTitle').textContent = 'Add Employee';
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeEmployeeModal() {
+            document.getElementById('employeeModal').classList.remove('active');
+        }
+
+        function saveEmployee(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('employeeId').value;
+            const employee = {
+                id: id || Date.now().toString(),
+                name: document.getElementById('employeeName').value,
+                role: document.getElementById('employeeRole').value,
+                contactType: document.getElementById('employeeContactType').value,
+                contact: document.getElementById('employeeContact').value,
+                timezone: document.getElementById('employeeTimezone').value,
+                rate: parseInt(document.getElementById('employeeRate').value),
+                availability: document.getElementById('employeeAvailability').value,
+                paid: true
+            };
+
+            if (id) {
+                const index = data.employees.findIndex(e => e.id === id);
+                data.employees[index] = employee;
+            } else {
+                data.employees.push(employee);
+                data.payments[employee.id] = { callsCompleted: 0, paid: true };
+            }
+
+            saveData();
+            renderEmployees();
+            renderClients();
+            closeEmployeeModal();
+        }
+
+        function editEmployee(id) {
+            openEmployeeModal(id);
+        }
+
+        function deleteEmployee(id) {
+            if (confirm('Delete this employee?')) {
+                data.employees = data.employees.filter(e => e.id !== id);
+                delete data.payments[id];
                 saveData();
                 renderEmployees();
             }
         }
 
-        // Render clients
+        // Client management
         function renderClients() {
-            const grid = document.getElementById('clientsGrid');
-            grid.innerHTML = data.clients.filter(c => !c.completed).map(client => {
-                const assignedEmp = data.employees.find(e => e.id === client.assignedTo);
-                
-                return `
-                    <div class="client-card ${!client.assignedTo ? 'unassigned' : ''}">
-                        <div class="client-header">
-                            <div class="client-name">${client.name}</div>
-                            <div class="client-plan">${client.plan}</div>
-                        </div>
-                        <div class="client-info">
-                            ${client.need} • ${client.preferredTime}
-                        </div>
-                        <div class="client-footer">
-                            ${assignedEmp ? 
-                                `<div class="assigned-to">Assigned to <span class="assigned-name">${assignedEmp.name}</span></div>
-                                <button class="status-btn" onclick="completeCall('${client.id}')">✓ Complete</button>` :
-                                `<select class="assign-select" onchange="assignClient('${client.id}', this.value)">
-                                    <option value="">Assign to...</option>
-                                    ${data.employees.map(e => 
-                                        `<option value="${e.id}">${e.name}</option>`
-                                    ).join('')}
-                                </select>`
-                            }
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Assign client
-        function assignClient(clientId, employeeId) {
-            const client = data.clients.find(c => c.id === clientId);
-            if (client && employeeId) {
-                client.assignedTo = employeeId;
-                saveData();
-                renderClients();
-                renderWeekView();
-            }
-        }
-
-        // Complete call
-        function completeCall(clientId) {
-            const rating = prompt('Rate this call (1-5 stars):');
-            if (rating && rating >= 1 && rating <= 5) {
-                const client = data.clients.find(c => c.id === clientId);
-                if (client) {
-                    client.completed = true;
-                    client.completedDate = new Date().toISOString();
-                    client.rating = parseInt(rating);
-                    
-                    // Update employee rating
-                    const emp = data.employees.find(e => e.id === client.assignedTo);
-                    if (emp) {
-                        const completedCalls = data.clients.filter(c => 
-                            c.assignedTo === emp.id && c.completed && c.rating
-                        );
-                        const avgRating = completedCalls.reduce((sum, c) => sum + c.rating, 0) / completedCalls.length;
-                        emp.rating = Math.round(avgRating * 10) / 10;
-                        emp.totalCalls = completedCalls.length;
-                    }
-                    
-                    saveData();
-                    renderAll();
-                }
-            }
-        }
-
-        // Week view
-        function renderWeekView() {
-            const table = document.getElementById('weekTable');
-            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const list = document.getElementById('clientList');
+            const assigneeSelect = document.getElementById('clientAssignee');
             
-            let html = `
-                <thead>
-                    <tr>
-                        <th>Team Member</th>
-                        ${days.map(d => `<th>${d}</th>`).join('')}
-                    </tr>
-                </thead>
-                <tbody>
-            `;
-
+            // Update assignee dropdown
+            assigneeSelect.innerHTML = '<option value="">Unassigned</option>';
             data.employees.forEach(emp => {
-                html += `<tr><td><strong>${emp.name}</strong></td>`;
-                
-                days.forEach((day, i) => {
-                    const calls = data.clients.filter(c => {
-                        if (!c.assignedTo || c.assignedTo !== emp.id) return false;
-                        if (!c.scheduledDate) return false;
-                        const callDay = new Date(c.scheduledDate).getDay();
-                        return callDay === (i + 1) % 7;
-                    });
-                    
-                    html += `<td class="day-cell">`;
-                    calls.forEach(call => {
-                        html += `<div class="call-block ${emp.id}">${call.name}</div>`;
-                    });
-                    html += `</td>`;
-                });
-                
-                html += `</tr>`;
+                assigneeSelect.innerHTML += `<option value="${emp.id}">${emp.name}</option>`;
             });
 
-            html += '</tbody>';
-            table.innerHTML = html;
-        }
+            list.innerHTML = '';
 
-        // Pay tracker
-        function renderPayTracker() {
-            const grid = document.getElementById('payCards');
-            
-            grid.innerHTML = data.employees.map(emp => {
-                const thisWeek = data.clients.filter(c => 
-                    c.assignedTo === emp.id && 
-                    c.completed && 
-                    new Date(c.completedDate) > new Date(Date.now() - 7 * 86400000)
-                ).length;
-                
-                const thisMonth = data.clients.filter(c => 
-                    c.assignedTo === emp.id && 
-                    c.completed && 
-                    new Date(c.completedDate) > new Date(Date.now() - 30 * 86400000)
-                ).length;
+            data.clients.forEach(client => {
+                const assignee = data.employees.find(e => e.id === client.assignee);
+                const planLabel = client.plan >= 249 ? 'Premium' : 
+                                 client.plan >= 199 ? 'Pro' : 
+                                 client.plan >= 99 ? 'Basic' : 'Troubleshoot';
 
-                const owed = thisMonth * emp.rate;
-                const isPaid = data.payments.find(p => 
-                    p.employeeId === emp.id && 
-                    p.month === new Date().getMonth()
-                );
-
-                return `
-                    <div class="pay-card" data-employee="${emp.id}">
-                        <div class="employee-name">${emp.name}</div>
-                        <div class="pay-stats">
-                            <div class="pay-stat">
-                                <span class="pay-label">This Week</span>
-                                <span class="pay-value">${thisWeek} calls</span>
-                            </div>
-                            <div class="pay-stat">
-                                <span class="pay-label">This Month</span>
-                                <span class="pay-value">${thisMonth} calls</span>
-                            </div>
-                            <div class="pay-stat">
-                                <span class="pay-label">Rate</span>
-                                <span class="pay-value">$${emp.rate}/call</span>
-                            </div>
-                        </div>
-                        <div class="pay-total">$${owed}</div>
-                        <button class="mark-paid-btn ${isPaid ? 'paid' : ''}" 
-                            onclick="markPaid('${emp.id}')">
-                            ${isPaid ? '✓ Paid' : 'Mark as Paid'}
-                        </button>
+                const item = document.createElement('li');
+                item.className = 'client-item';
+                item.onclick = () => showClientDetail(client.id);
+                item.innerHTML = `
+                    <div class="client-header">
+                        <div class="client-name">${client.name}</div>
+                        <span class="badge badge-${client.status}">${client.status}</span>
+                    </div>
+                    <div class="client-meta">
+                        <span>${planLabel} - $${client.plan}</span>
+                        ${assignee ? `<span>→ ${assignee.name}</span>` : '<span>No assignee</span>'}
                     </div>
                 `;
-            }).join('');
+                list.appendChild(item);
+            });
         }
 
-        // Mark as paid
-        function markPaid(employeeId) {
-            const month = new Date().getMonth();
-            const existing = data.payments.find(p => 
-                p.employeeId === employeeId && p.month === month
-            );
-            
-            if (existing) {
-                data.payments = data.payments.filter(p => p !== existing);
+        function openClientModal(id = null) {
+            const modal = document.getElementById('clientModal');
+            const form = document.getElementById('clientForm');
+            form.reset();
+
+            // Update assignee dropdown
+            const assigneeSelect = document.getElementById('clientAssignee');
+            assigneeSelect.innerHTML = '<option value="">Unassigned</option>';
+            data.employees.forEach(emp => {
+                assigneeSelect.innerHTML += `<option value="${emp.id}">${emp.name}</option>`;
+            });
+
+            if (id) {
+                const client = data.clients.find(c => c.id === id);
+                document.getElementById('clientModalTitle').textContent = 'Edit Client';
+                document.getElementById('clientId').value = client.id;
+                document.getElementById('clientName').value = client.name;
+                
+                const standardPlans = [49, 99, 199, 249];
+                if (standardPlans.includes(client.plan)) {
+                    document.getElementById('clientPlan').value = client.plan;
+                } else {
+                    document.getElementById('clientPlan').value = 'custom';
+                    document.getElementById('customPlanGroup').style.display = 'block';
+                    document.getElementById('clientCustomPlan').value = client.plan;
+                }
+                
+                document.getElementById('clientBrief').value = client.brief;
+                document.getElementById('clientAssignee').value = client.assignee;
+                document.getElementById('clientStatus').value = client.status;
             } else {
-                data.payments.push({
-                    employeeId,
-                    month,
-                    date: new Date().toISOString()
-                });
+                document.getElementById('clientModalTitle').textContent = 'Add Client';
             }
-            
-            saveData();
-            renderPayTracker();
+
+            modal.classList.add('active');
         }
 
-        // Performance
-        function renderPerformance() {
-            const grid = document.getElementById('perfCards');
-            
-            grid.innerHTML = data.employees.map(emp => {
-                const stars = '⭐'.repeat(Math.round(emp.rating));
-                
-                return `
-                    <div class="perf-card" data-employee="${emp.id}">
-                        <div class="perf-name">${emp.name}</div>
-                        <div class="stars">${stars}</div>
-                        <div class="perf-rating">${emp.rating}</div>
-                        <div class="perf-calls">${emp.totalCalls} calls completed</div>
-                    </div>
-                `;
-            }).join('');
+        function closeClientModal() {
+            document.getElementById('clientModal').classList.remove('active');
         }
 
-        // Switch tabs
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            
-            event.target.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
-            
-            // Refresh view
-            if (tabName === 'week') renderWeekView();
-            if (tabName === 'pay') renderPayTracker();
-            if (tabName === 'performance') renderPerformance();
-        }
-
-        // Add client modal
-        function openAddClientModal() {
-            // Find best employee to suggest
-            const available = data.employees.filter(e => e.status === 'available');
-            if (available.length > 0) {
-                const callCounts = available.map(e => ({
-                    emp: e,
-                    count: data.clients.filter(c => 
-                        c.assignedTo === e.id && 
-                        !c.completed
-                    ).length
-                }));
-                
-                callCounts.sort((a, b) => a.count - b.count);
-                const best = callCounts[0].emp;
-                
-                document.getElementById('suggestion').textContent = 
-                    `💡 ${best.name} is free and has the fewest active calls (${callCounts[0].count})`;
-            } else {
-                document.getElementById('suggestion').textContent = 
-                    '⚠️ No contractors are currently available';
-            }
-            
-            // Populate assign dropdown
-            const select = document.getElementById('clientAssign');
-            select.innerHTML = '<option value="">Unassigned</option>' + 
-                data.employees.map(e => 
-                    `<option value="${e.id}">${e.name}</option>`
-                ).join('');
-            
-            document.getElementById('addClientModal').classList.add('active');
-        }
-
-        function closeAddClientModal() {
-            document.getElementById('addClientModal').classList.remove('active');
-            document.getElementById('addClientForm').reset();
-        }
-
-        document.getElementById('addClientForm').addEventListener('submit', (e) => {
+        function saveClient(e) {
             e.preventDefault();
-            
-            const newClient = {
-                id: 'c' + Date.now(),
+
+            const id = document.getElementById('clientId').value;
+            const planSelect = document.getElementById('clientPlan').value;
+            const plan = planSelect === 'custom' 
+                ? parseInt(document.getElementById('clientCustomPlan').value)
+                : parseInt(planSelect);
+
+            const client = {
+                id: id || Date.now().toString(),
                 name: document.getElementById('clientName').value,
-                plan: document.getElementById('clientPlan').value,
-                need: document.getElementById('clientNeed').value,
-                preferredTime: document.getElementById('clientTime').value,
-                assignedTo: document.getElementById('clientAssign').value || null,
-                completed: false,
-                rating: null
+                plan: plan,
+                brief: document.getElementById('clientBrief').value,
+                assignee: document.getElementById('clientAssignee').value,
+                status: document.getElementById('clientStatus').value
             };
-            
-            data.clients.push(newClient);
+
+            if (id) {
+                const index = data.clients.findIndex(c => c.id === id);
+                data.clients[index] = client;
+            } else {
+                data.clients.push(client);
+            }
+
             saveData();
             renderClients();
-            closeAddClientModal();
-        });
-
-        // Close modal on backdrop click
-        document.getElementById('addClientModal').addEventListener('click', (e) => {
-            if (e.target.id === 'addClientModal') {
-                closeAddClientModal();
-            }
-        });
-
-        // Render all
-        function renderAll() {
-            renderEmployees();
-            renderClients();
-            renderWeekView();
-            renderPayTracker();
-            renderPerformance();
+            closeClientModal();
         }
+
+        function showClientDetail(id) {
+            const client = data.clients.find(c => c.id === id);
+            const assignee = data.employees.find(e => e.id === client.assignee);
+            const planLabel = client.plan >= 249 ? 'Premium' : 
+                             client.plan >= 199 ? 'Pro' : 
+                             client.plan >= 99 ? 'Basic' : 'Troubleshoot';
+
+            document.getElementById('clientDetailName').textContent = client.name;
+            document.getElementById('clientDetailContent').innerHTML = `
+                <div class="form-group">
+                    <label>Plan</label>
+                    <div>${planLabel} - $${client.plan}</div>
+                </div>
+                <div class="form-group">
+                    <label>Assigned To</label>
+                    <div>${assignee ? assignee.name : 'Unassigned'}</div>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <div><span class="badge badge-${client.status}">${client.status}</span></div>
+                </div>
+                <div class="form-group">
+                    <label>Brief</label>
+                    <div style="white-space: pre-wrap; background: #161b22; padding: 12px; border-radius: 4px; border: 1px solid #30363d;">${client.brief}</div>
+                </div>
+            `;
+
+            currentClientDetail = id;
+            document.getElementById('clientDetailModal').classList.add('active');
+        }
+
+        let currentClientDetail = null;
+
+        function closeClientDetailModal() {
+            document.getElementById('clientDetailModal').classList.remove('active');
+            currentClientDetail = null;
+        }
+
+        function editClientFromDetail() {
+            closeClientDetailModal();
+            openClientModal(currentClientDetail);
+        }
+
+        // Schedule management
+        function renderSchedule() {
+            const grid = document.getElementById('scheduleGrid');
+            const summary = document.getElementById('weekSummary');
+            grid.innerHTML = '';
+            summary.innerHTML = '';
+
+            const today = new Date().toISOString().split('T')[0];
+            const summaryData = {};
+
+            data.employees.forEach(emp => {
+                summaryData[emp.id] = 0;
+            });
+
+            data.calls.forEach(call => {
+                if (call.date === today) {
+                    summaryData[call.employeeId] = (summaryData[call.employeeId] || 0) + 1;
+                }
+            });
+
+            // Render summary
+            data.employees.forEach(emp => {
+                const count = summaryData[emp.id] || 0;
+                const stat = document.createElement('div');
+                stat.className = 'week-stat';
+                stat.innerHTML = `<strong>${emp.name}:</strong> ${count > 0 ? `${count} call${count > 1 ? 's' : ''} today` : 'free'}`;
+                summary.appendChild(stat);
+            });
+
+            // Render schedules
+            data.employees.forEach(emp => {
+                const employeeCalls = data.calls.filter(c => c.employeeId === emp.id)
+                    .sort((a, b) => new Date(a.date + ' ' + a.time) - new Date(b.date + ' ' + b.time));
+
+                const schedule = document.createElement('div');
+                schedule.className = 'employee-schedule';
+                schedule.innerHTML = `<h3>${emp.name}</h3>`;
+
+                if (employeeCalls.length === 0) {
+                    schedule.innerHTML += '<div style="color: #7d8590; font-size: 13px;">No calls scheduled</div>';
+                } else {
+                    employeeCalls.forEach(call => {
+                        const callDate = new Date(call.date);
+                        const isToday = call.date === today;
+                        const dateStr = callDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        
+                        const callItem = document.createElement('div');
+                        callItem.className = 'call-item' + (isToday ? ' today' : '');
+                        callItem.innerHTML = `
+                            <div><strong>${call.clientName}</strong></div>
+                            <div class="call-time">${dateStr} at ${call.time} (${call.duration}min)</div>
+                        `;
+                        schedule.appendChild(callItem);
+                    });
+                }
+
+                grid.appendChild(schedule);
+            });
+        }
+
+        function openCallModal(id = null) {
+            const modal = document.getElementById('callModal');
+            const form = document.getElementById('callForm');
+            form.reset();
+
+            // Update employee dropdown
+            const empSelect = document.getElementById('callEmployee');
+            empSelect.innerHTML = '<option value="">Select employee...</option>';
+            data.employees.forEach(emp => {
+                empSelect.innerHTML += `<option value="${emp.id}">${emp.name}</option>`;
+            });
+
+            if (id) {
+                const call = data.calls.find(c => c.id === id);
+                document.getElementById('callId').value = call.id;
+                document.getElementById('callEmployee').value = call.employeeId;
+                document.getElementById('callClient').value = call.clientName;
+                document.getElementById('callDate').value = call.date;
+                document.getElementById('callTime').value = call.time;
+                document.getElementById('callDuration').value = call.duration;
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeCallModal() {
+            document.getElementById('callModal').classList.remove('active');
+        }
+
+        function saveCall(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('callId').value;
+            const call = {
+                id: id || Date.now().toString(),
+                employeeId: document.getElementById('callEmployee').value,
+                clientName: document.getElementById('callClient').value,
+                date: document.getElementById('callDate').value,
+                time: document.getElementById('callTime').value,
+                duration: parseInt(document.getElementById('callDuration').value)
+            };
+
+            if (id) {
+                const index = data.calls.findIndex(c => c.id === id);
+                data.calls[index] = call;
+            } else {
+                data.calls.push(call);
+            }
+
+            saveData();
+            renderSchedule();
+            closeCallModal();
+        }
+
+        // Payment tracking
+        function renderPayments() {
+            const tbody = document.getElementById('paymentTableBody');
+            const summary = document.getElementById('paymentSummary');
+            tbody.innerHTML = '';
+
+            let totalUnpaid = 0;
+
+            data.employees.forEach(emp => {
+                const payment = data.payments[emp.id] || { callsCompleted: 0, paid: true };
+                const totalOwed = payment.callsCompleted * emp.rate;
+                
+                if (!payment.paid) {
+                    totalUnpaid += totalOwed;
+                }
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${emp.name}</strong></td>
+                    <td>${payment.callsCompleted}</td>
+                    <td>$${emp.rate}</td>
+                    <td><strong>$${totalOwed}</strong></td>
+                    <td><span class="badge badge-${payment.paid ? 'paid' : 'unpaid'}">${payment.paid ? 'Paid ✅' : 'Unpaid ❌'}</span></td>
+                    <td>
+                        <button class="btn btn-${payment.paid ? 'danger' : 'success'}" onclick="togglePayment('${emp.id}')">
+                            ${payment.paid ? 'Mark Unpaid' : 'Mark Paid'}
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            summary.innerHTML = `Total unpaid: <span>$${totalUnpaid}</span>`;
+        }
+
+        function togglePayment(employeeId) {
+            const payment = data.payments[employeeId];
+            payment.paid = !payment.paid;
+            
+            const emp = data.employees.find(e => e.id === employeeId);
+            if (emp) {
+                emp.paid = payment.paid;
+            }
+
+            saveData();
+            renderPayments();
+            renderEmployees();
+        }
+
+        // Export/Import
+        function exportData() {
+            const dataStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `employee-dashboard-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+        }
+
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        data = JSON.parse(event.target.result);
+                        saveData();
+                        renderEmployees();
+                        renderClients();
+                        renderSchedule();
+                        renderPayments();
+                        alert('Data imported successfully!');
+                    } catch (error) {
+                        alert('Error importing data: ' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        // Handle custom plan toggle
+        document.getElementById('clientPlan').addEventListener('change', function() {
+            const customGroup = document.getElementById('customPlanGroup');
+            customGroup.style.display = this.value === 'custom' ? 'block' : 'none';
+        });
 
         // Initialize
-        loadData();
-        renderAll();
-
-        // Update times every minute
-        setInterval(() => {
-            renderEmployees();
-        }, 60000);
+        initializeData();
+        renderEmployees();
+        renderClients();
     </script>
 </body>
 </html>
