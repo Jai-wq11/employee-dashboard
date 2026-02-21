@@ -24,6 +24,46 @@
             padding: 20px;
         }
 
+        /* Login Screen */
+        .login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 32px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .login-card h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .login-error {
+            background: rgba(218, 54, 51, 0.1);
+            border: 1px solid #da3633;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 16px;
+            color: #f85149;
+            font-size: 14px;
+            display: none;
+        }
+
+        .login-error.active {
+            display: block;
+        }
+
         /* Header */
         header {
             background: #161b22;
@@ -43,10 +83,85 @@
             padding: 0 20px;
         }
 
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         h1 {
             font-size: 20px;
             font-weight: 600;
             padding: 16px 0;
+        }
+
+        .sync-status {
+            font-size: 12px;
+            color: #7d8590;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sync-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #3fb950;
+            animation: pulse 2s infinite;
+        }
+
+        .sync-dot.syncing {
+            background: #d4a72c;
+        }
+
+        .sync-dot.offline {
+            background: #f85149;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .online-users {
+            font-size: 12px;
+            color: #7d8590;
+            padding: 6px 12px;
+            background: #0d1117;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .online-users:hover {
+            color: #c9d1d9;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: #7d8590;
+        }
+
+        .admin-btn {
+            background: #21262d;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            min-height: 32px;
+        }
+
+        .admin-btn:hover {
+            background: #30363d;
         }
 
         .export-btn {
@@ -63,6 +178,21 @@
 
         .export-btn:hover {
             background: #2ea043;
+        }
+
+        .logout-btn {
+            background: #21262d;
+            color: #c9d1d9;
+            border: 1px solid #30363d;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            min-height: 32px;
+        }
+
+        .logout-btn:hover {
+            background: #30363d;
         }
 
         /* Tabs */
@@ -434,6 +564,15 @@
             .schedule-grid {
                 grid-template-columns: 1fr;
             }
+
+            .header-content {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .header-right {
+                flex-wrap: wrap;
+            }
         }
 
         /* Action Buttons */
@@ -513,100 +652,157 @@
         .week-stat strong {
             color: #fff;
         }
+
+        .email-list {
+            list-style: none;
+            margin-top: 16px;
+        }
+
+        .email-item {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .email-item.admin {
+            border-color: #f78166;
+        }
+
+        #app.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <h1>🎯 Employee Dashboard</h1>
-            <div style="display: flex; gap: 8px;">
-                <button class="btn" onclick="importData()">Import</button>
-                <button class="export-btn" onclick="exportData()">Export</button>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <h2>🎯 Employee Dashboard</h2>
+            <div id="loginError" class="login-error"></div>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="your.email@example.com" required autofocus>
+                </div>
+                <button type="submit" class="btn-primary btn" style="width: 100%;">Access Dashboard</button>
+            </form>
+            <div style="margin-top: 16px; text-align: center; font-size: 12px; color: #7d8590;">
+                Enter your authorized email to continue
             </div>
         </div>
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('team')">Team</button>
-            <button class="tab" onclick="switchTab('clients')">Clients</button>
-            <button class="tab" onclick="switchTab('schedule')">Schedule</button>
-            <button class="tab" onclick="switchTab('payments')">Payments</button>
-        </div>
-    </header>
+    </div>
 
-    <div class="container">
-        <!-- Team Tab -->
-        <div id="team" class="tab-content active">
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h2>Team Members</h2>
-                    <button class="btn-primary btn" onclick="openEmployeeModal()">+ Add Employee</button>
+    <!-- Main App -->
+    <div id="app" class="hidden">
+        <header>
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>🎯 Employee Dashboard</h1>
+                    <div class="sync-status">
+                        <div class="sync-dot" id="syncDot"></div>
+                        <span id="syncText">Synced</span>
+                    </div>
                 </div>
-                <div style="overflow-x: auto;">
-                    <table id="employeeTable">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Role</th>
-                                <th>Contact</th>
-                                <th>Timezone</th>
-                                <th>Rate/Call</th>
-                                <th>Availability</th>
-                                <th>Payment Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="employeeTableBody">
-                        </tbody>
-                    </table>
+                <div class="header-right">
+                    <div class="online-users" id="onlineUsers" onclick="showOnlineUsers()" title="Click to see who's online">
+                        👥 Loading...
+                    </div>
+                    <div class="user-email" id="userEmail"></div>
+                    <button class="admin-btn" id="adminBtn" onclick="openAdminModal()" style="display: none;">⚙️ Admin</button>
+                    <button class="btn" onclick="importData()">Import</button>
+                    <button class="export-btn" onclick="exportData()">Export</button>
+                    <button class="logout-btn" onclick="handleLogout()">Logout</button>
                 </div>
             </div>
-        </div>
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('team')">Team</button>
+                <button class="tab" onclick="switchTab('clients')">Clients</button>
+                <button class="tab" onclick="switchTab('schedule')">Schedule</button>
+                <button class="tab" onclick="switchTab('payments')">Payments</button>
+            </div>
+        </header>
 
-        <!-- Clients Tab -->
-        <div id="clients" class="tab-content">
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h2>Clients & Briefings</h2>
-                    <button class="btn-primary btn" onclick="openClientModal()">+ Add Client</button>
+        <div class="container">
+            <!-- Team Tab -->
+            <div id="team" class="tab-content active">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h2>Team Members</h2>
+                        <button class="btn-primary btn" onclick="openEmployeeModal()">+ Add Employee</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table id="employeeTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Contact</th>
+                                    <th>Timezone</th>
+                                    <th>Rate/Call</th>
+                                    <th>Availability</th>
+                                    <th>Payment Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employeeTableBody">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <ul class="client-list" id="clientList">
-                </ul>
             </div>
-        </div>
 
-        <!-- Schedule Tab -->
-        <div id="schedule" class="tab-content">
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h2>Week Schedule</h2>
-                    <button class="btn-primary btn" onclick="openCallModal()">+ Schedule Call</button>
+            <!-- Clients Tab -->
+            <div id="clients" class="tab-content">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h2>Clients & Briefings</h2>
+                        <button class="btn-primary btn" onclick="openClientModal()">+ Add Client</button>
+                    </div>
+                    <ul class="client-list" id="clientList">
+                    </ul>
                 </div>
-                <div class="week-summary" id="weekSummary"></div>
-                <div class="schedule-grid" id="scheduleGrid"></div>
             </div>
-        </div>
 
-        <!-- Payments Tab -->
-        <div id="payments" class="tab-content">
-            <div class="summary" id="paymentSummary">
-                Total unpaid: <span>$0</span>
+            <!-- Schedule Tab -->
+            <div id="schedule" class="tab-content">
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <h2>Week Schedule</h2>
+                        <button class="btn-primary btn" onclick="openCallModal()">+ Schedule Call</button>
+                    </div>
+                    <div class="week-summary" id="weekSummary"></div>
+                    <div class="schedule-grid" id="scheduleGrid"></div>
+                </div>
             </div>
-            <div class="card">
-                <h2>Payment Tracking</h2>
-                <div style="overflow-x: auto;">
-                    <table id="paymentTable">
-                        <thead>
-                            <tr>
-                                <th>Employee</th>
-                                <th>Calls This Month</th>
-                                <th>Rate/Call</th>
-                                <th>Total Owed</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="paymentTableBody">
-                        </tbody>
-                    </table>
+
+            <!-- Payments Tab -->
+            <div id="payments" class="tab-content">
+                <div class="summary" id="paymentSummary">
+                    Total unpaid: <span>$0</span>
+                </div>
+                <div class="card">
+                    <h2>Payment Tracking</h2>
+                    <div style="overflow-x: auto;">
+                        <table id="paymentTable">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Calls This Month</th>
+                                    <th>Rate/Call</th>
+                                    <th>Total Owed</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentTableBody">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -772,7 +968,71 @@
         </div>
     </div>
 
+    <!-- Admin Modal -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚙️ Admin Panel</h3>
+                <button class="close-btn" onclick="closeAdminModal()">&times;</button>
+            </div>
+            <div class="form-group">
+                <label>Add Authorized Email</label>
+                <form onsubmit="addAuthorizedEmail(event)" style="display: flex; gap: 8px;">
+                    <input type="email" id="newEmail" placeholder="email@example.com" required style="margin-bottom: 0;">
+                    <button type="submit" class="btn-primary btn">Add</button>
+                </form>
+            </div>
+            <div class="form-group">
+                <label>Authorized Users</label>
+                <ul class="email-list" id="emailList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Online Users Modal -->
+    <div id="onlineUsersModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>👥 Online Users</h3>
+                <button class="close-btn" onclick="closeOnlineUsersModal()">&times;</button>
+            </div>
+            <ul class="email-list" id="onlineUsersList"></ul>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
     <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDummy", // Not needed for database with open rules
+            authDomain: "openclaw-dashboard-28911.firebaseapp.com",
+            databaseURL: "https://openclaw-dashboard-28911-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "openclaw-dashboard-28911",
+            storageBucket: "openclaw-dashboard-28911.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abc123"
+        };
+
+        // Initialize Firebase
+        let db = null;
+        let firebaseEnabled = false;
+        let currentUser = null;
+        let presenceRef = null;
+        let lastSyncTime = Date.now();
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+            firebaseEnabled = true;
+            console.log('Firebase initialized successfully');
+        } catch (error) {
+            console.error('Firebase initialization failed:', error);
+            firebaseEnabled = false;
+        }
+
         // Data structure
         let data = {
             employees: [],
@@ -780,6 +1040,266 @@
             calls: [],
             payments: {}
         };
+
+        // Auth system
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const errorDiv = document.getElementById('loginError');
+
+            if (!firebaseEnabled) {
+                // Fallback to localStorage for admin
+                if (email === 'kitboonssocial@gmail.com') {
+                    currentUser = { email, isAdmin: true };
+                    showDashboard();
+                    return;
+                }
+                errorDiv.textContent = 'Firebase is offline. Only admin can access in offline mode.';
+                errorDiv.classList.add('active');
+                return;
+            }
+
+            try {
+                const snapshot = await db.ref('authorized-emails').once('value');
+                const authorizedEmails = snapshot.val() || {};
+                
+                if (authorizedEmails[email.replace(/\./g, '_')]) {
+                    currentUser = { 
+                        email, 
+                        isAdmin: email === 'kitboonssocial@gmail.com' 
+                    };
+                    showDashboard();
+                    setupPresence();
+                    loadDataFromFirebase();
+                } else {
+                    errorDiv.textContent = 'This email is not authorized. Contact admin for access.';
+                    errorDiv.classList.add('active');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                errorDiv.textContent = 'Login failed. Please try again.';
+                errorDiv.classList.add('active');
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('app').classList.remove('hidden');
+            document.getElementById('userEmail').textContent = currentUser.email;
+            
+            if (currentUser.isAdmin) {
+                document.getElementById('adminBtn').style.display = 'block';
+            }
+
+            initializeData();
+            renderEmployees();
+            renderClients();
+        }
+
+        function handleLogout() {
+            if (presenceRef) {
+                presenceRef.remove();
+            }
+            currentUser = null;
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('app').classList.add('hidden');
+            document.getElementById('loginForm').reset();
+            document.getElementById('loginError').classList.remove('active');
+        }
+
+        // Presence system
+        function setupPresence() {
+            if (!firebaseEnabled || !currentUser) return;
+
+            const userKey = currentUser.email.replace(/\./g, '_');
+            presenceRef = db.ref(`presence/${userKey}`);
+            
+            presenceRef.set({
+                email: currentUser.email,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            });
+
+            presenceRef.onDisconnect().remove();
+
+            // Update online users count
+            db.ref('presence').on('value', (snapshot) => {
+                const users = snapshot.val() || {};
+                const count = Object.keys(users).length;
+                document.getElementById('onlineUsers').textContent = `👥 ${count} online`;
+            });
+        }
+
+        function showOnlineUsers() {
+            if (!firebaseEnabled) return;
+
+            db.ref('presence').once('value', (snapshot) => {
+                const users = snapshot.val() || {};
+                const list = document.getElementById('onlineUsersList');
+                list.innerHTML = '';
+
+                Object.values(users).forEach(user => {
+                    const item = document.createElement('li');
+                    item.className = 'email-item';
+                    const timeSince = Math.floor((Date.now() - user.timestamp) / 1000);
+                    item.innerHTML = `
+                        <span>${user.email}</span>
+                        <span style="color: #7d8590; font-size: 12px;">${timeSince < 60 ? 'just now' : Math.floor(timeSince / 60) + 'm ago'}</span>
+                    `;
+                    list.appendChild(item);
+                });
+
+                document.getElementById('onlineUsersModal').classList.add('active');
+            });
+        }
+
+        function closeOnlineUsersModal() {
+            document.getElementById('onlineUsersModal').classList.remove('active');
+        }
+
+        // Admin functions
+        function openAdminModal() {
+            if (!currentUser?.isAdmin) return;
+
+            renderAuthorizedEmails();
+            document.getElementById('adminModal').classList.add('active');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.remove('active');
+        }
+
+        async function renderAuthorizedEmails() {
+            if (!firebaseEnabled) return;
+
+            const snapshot = await db.ref('authorized-emails').once('value');
+            const emails = snapshot.val() || {};
+            const list = document.getElementById('emailList');
+            list.innerHTML = '';
+
+            Object.entries(emails).forEach(([key, value]) => {
+                const email = value.email || key.replace(/_/g, '.');
+                const isAdmin = email === 'kitboonssocial@gmail.com';
+                
+                const item = document.createElement('li');
+                item.className = 'email-item' + (isAdmin ? ' admin' : '');
+                item.innerHTML = `
+                    <span>${email} ${isAdmin ? '(Admin)' : ''}</span>
+                    ${!isAdmin ? `<button class="btn-danger btn" onclick="removeAuthorizedEmail('${key}')">Remove</button>` : ''}
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        async function addAuthorizedEmail(e) {
+            e.preventDefault();
+            if (!currentUser?.isAdmin || !firebaseEnabled) return;
+
+            const email = document.getElementById('newEmail').value.trim().toLowerCase();
+            const key = email.replace(/\./g, '_');
+
+            await db.ref(`authorized-emails/${key}`).set({
+                email: email,
+                addedBy: currentUser.email,
+                addedAt: firebase.database.ServerValue.TIMESTAMP
+            });
+
+            document.getElementById('newEmail').value = '';
+            renderAuthorizedEmails();
+        }
+
+        async function removeAuthorizedEmail(key) {
+            if (!currentUser?.isAdmin || !firebaseEnabled) return;
+            if (confirm('Remove this user?')) {
+                await db.ref(`authorized-emails/${key}`).remove();
+                renderAuthorizedEmails();
+            }
+        }
+
+        // Firebase sync functions
+        function updateSyncStatus(status) {
+            const dot = document.getElementById('syncDot');
+            const text = document.getElementById('syncText');
+            const timeSince = Math.floor((Date.now() - lastSyncTime) / 1000);
+            
+            if (status === 'syncing') {
+                dot.className = 'sync-dot syncing';
+                text.textContent = 'Syncing...';
+            } else if (status === 'offline') {
+                dot.className = 'sync-dot offline';
+                text.textContent = 'Offline';
+            } else {
+                dot.className = 'sync-dot';
+                lastSyncTime = Date.now();
+                text.textContent = 'Synced';
+            }
+
+            // Update "X seconds ago"
+            setInterval(() => {
+                if (status !== 'syncing') {
+                    const seconds = Math.floor((Date.now() - lastSyncTime) / 1000);
+                    if (seconds < 60) {
+                        text.textContent = `Synced ${seconds}s ago`;
+                    } else {
+                        text.textContent = `Synced ${Math.floor(seconds / 60)}m ago`;
+                    }
+                }
+            }, 1000);
+        }
+
+        async function loadDataFromFirebase() {
+            if (!firebaseEnabled) {
+                updateSyncStatus('offline');
+                return;
+            }
+
+            updateSyncStatus('syncing');
+
+            try {
+                // Listen to data changes
+                db.ref('data').on('value', (snapshot) => {
+                    const firebaseData = snapshot.val();
+                    if (firebaseData) {
+                        data = firebaseData;
+                        saveToLocalStorage();
+                        renderEmployees();
+                        renderClients();
+                        if (document.getElementById('schedule').classList.contains('active')) {
+                            renderSchedule();
+                        }
+                        if (document.getElementById('payments').classList.contains('active')) {
+                            renderPayments();
+                        }
+                    }
+                    updateSyncStatus('synced');
+                });
+            } catch (error) {
+                console.error('Firebase sync error:', error);
+                updateSyncStatus('offline');
+            }
+        }
+
+        async function saveToFirebase() {
+            if (!firebaseEnabled) {
+                saveToLocalStorage();
+                return;
+            }
+
+            updateSyncStatus('syncing');
+            
+            try {
+                await db.ref('data').set(data);
+                saveToLocalStorage();
+                updateSyncStatus('synced');
+            } catch (error) {
+                console.error('Firebase save error:', error);
+                updateSyncStatus('offline');
+                saveToLocalStorage();
+            }
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('employeeDashboard', JSON.stringify(data));
+        }
 
         // Initialize with pre-populated data
         function initializeData() {
@@ -866,13 +1386,17 @@
                         '3': { callsCompleted: 0, paid: true }
                     }
                 };
-                saveData();
+                saveToFirebase();
             }
-        }
 
-        // Save data to localStorage
-        function saveData() {
-            localStorage.setItem('employeeDashboard', JSON.stringify(data));
+            // Initialize admin email if Firebase is enabled
+            if (firebaseEnabled && currentUser?.isAdmin) {
+                db.ref('authorized-emails/kitboonssocial_gmail_com').set({
+                    email: 'kitboonssocial@gmail.com',
+                    isAdmin: true,
+                    createdAt: firebase.database.ServerValue.TIMESTAMP
+                });
+            }
         }
 
         // Tab switching
@@ -968,7 +1492,7 @@
                 data.payments[employee.id] = { callsCompleted: 0, paid: true };
             }
 
-            saveData();
+            saveToFirebase();
             renderEmployees();
             renderClients();
             closeEmployeeModal();
@@ -982,7 +1506,7 @@
             if (confirm('Delete this employee?')) {
                 data.employees = data.employees.filter(e => e.id !== id);
                 delete data.payments[id];
-                saveData();
+                saveToFirebase();
                 renderEmployees();
             }
         }
@@ -1089,7 +1613,7 @@
                 data.clients.push(client);
             }
 
-            saveData();
+            saveToFirebase();
             renderClients();
             closeClientModal();
         }
@@ -1246,7 +1770,7 @@
                 data.calls.push(call);
             }
 
-            saveData();
+            saveToFirebase();
             renderSchedule();
             closeCallModal();
         }
@@ -1295,7 +1819,7 @@
                 emp.paid = payment.paid;
             }
 
-            saveData();
+            saveToFirebase();
             renderPayments();
             renderEmployees();
         }
@@ -1321,7 +1845,7 @@
                 reader.onload = (event) => {
                     try {
                         data = JSON.parse(event.target.result);
-                        saveData();
+                        saveToFirebase();
                         renderEmployees();
                         renderClients();
                         renderSchedule();
@@ -1341,11 +1865,6 @@
             const customGroup = document.getElementById('customPlanGroup');
             customGroup.style.display = this.value === 'custom' ? 'block' : 'none';
         });
-
-        // Initialize
-        initializeData();
-        renderEmployees();
-        renderClients();
     </script>
 </body>
 </html>
