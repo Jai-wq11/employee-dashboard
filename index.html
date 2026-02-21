@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenClaw Client & Employee Dashboard</title>
+    <title>Employee Dashboard</title>
     <style>
         * {
             margin: 0;
@@ -11,89 +11,52 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --bg-primary: #1a1a2e;
-            --bg-secondary: #16213e;
-            --bg-card: #0f1419;
-            --accent: #4a90e2;
-            --accent-hover: #357abd;
-            --text-primary: #e4e4e7;
-            --text-secondary: #a1a1aa;
-            --border: #2d2d3a;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --info: #6366f1;
-        }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            background: #0a0a0a;
+            color: #e0e0e0;
             line-height: 1.6;
-            padding-bottom: 60px;
         }
 
-        .header {
-            background: var(--bg-secondary);
-            padding: 1.5rem 2rem;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        .header h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .header-subtitle {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            margin-top: 0.25rem;
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #fff;
         }
 
         .tabs {
             display: flex;
-            gap: 0.5rem;
-            padding: 1rem 2rem;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #222;
+            flex-wrap: wrap;
         }
 
         .tab {
-            padding: 0.75rem 1.5rem;
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
+            padding: 12px 24px;
+            background: none;
+            border: none;
+            color: #888;
             cursor: pointer;
+            font-size: 15px;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
             transition: all 0.2s;
-            white-space: nowrap;
-            font-size: 0.9rem;
-            font-weight: 500;
         }
 
         .tab:hover {
-            background: var(--bg-card);
-            border-color: var(--accent);
+            color: #fff;
         }
 
         .tab.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
+            color: #fff;
+            border-bottom-color: #4a9eff;
         }
 
         .tab-content {
@@ -102,99 +65,25 @@
 
         .tab-content.active {
             display: block;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: all 0.2s;
-        }
-
-        .card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.1);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .stat-card {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin: 0.5rem 0;
-        }
-
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
         }
 
         .btn {
-            padding: 0.75rem 1.5rem;
-            background: var(--accent);
-            color: white;
+            padding: 10px 20px;
+            background: #4a9eff;
+            color: #fff;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-size: 14px;
+            transition: background 0.2s;
         }
 
         .btn:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-        }
-
-        .btn-secondary:hover {
-            background: var(--bg-card);
-            border-color: var(--accent);
+            background: #3a8eef;
         }
 
         .btn-danger {
-            background: var(--danger);
+            background: #ef4444;
         }
 
         .btn-danger:hover {
@@ -202,47 +91,106 @@
         }
 
         .btn-small {
-            padding: 0.5rem 1rem;
-            font-size: 0.85rem;
+            padding: 6px 12px;
+            font-size: 13px;
         }
 
-        .input-group {
-            margin-bottom: 1rem;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .input-group input,
-        .input-group select,
-        .input-group textarea {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
+        .card {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
             border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            transition: all 0.2s;
+            padding: 20px;
+            margin-bottom: 20px;
         }
 
-        .input-group input:focus,
-        .input-group select:focus,
-        .input-group textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #fff;
         }
 
-        .input-group textarea {
+        .employee-list, .client-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .employee-item, .client-item {
+            background: #111;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .employee-info, .client-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .employee-name, .client-name {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .employee-details, .client-details {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-right: 8px;
+        }
+
+        .status-available { background: #065f46; color: #6ee7b7; }
+        .status-busy { background: #7c2d12; color: #fca5a5; }
+        .status-offline { background: #374151; color: #9ca3af; }
+        .status-unassigned { background: #374151; color: #9ca3af; }
+        .status-assigned { background: #1e3a8a; color: #93c5fd; }
+        .status-scheduled { background: #065f46; color: #6ee7b7; }
+        .status-completed { background: #422006; color: #fbbf24; }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: #111;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
             resize: vertical;
-            min-height: 100px;
-            font-family: inherit;
+            min-height: 60px;
         }
 
         .modal {
@@ -254,22 +202,22 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
+            padding: 20px;
+            overflow-y: auto;
         }
 
         .modal.active {
             display: flex;
-            animation: fadeIn 0.2s;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-content {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 2rem;
-            max-width: 600px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 500px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
@@ -279,1413 +227,728 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
         }
 
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 600;
+        .modal-header h2 {
+            font-size: 20px;
+            color: #fff;
         }
 
-        .close-btn {
+        .close-modal {
             background: none;
             border: none;
-            color: var(--text-secondary);
-            font-size: 1.5rem;
+            color: #888;
+            font-size: 24px;
             cursor: pointer;
             padding: 0;
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
+        }
+
+        .close-modal:hover {
+            color: #fff;
+        }
+
+        .filter-bar {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-
-        .close-btn:hover {
-            background: var(--bg-card);
-            color: var(--text-primary);
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .status-new { background: var(--info); color: white; }
-        .status-scheduled { background: var(--warning); color: white; }
-        .status-in-progress { background: #8b5cf6; color: white; }
-        .status-completed { background: var(--success); color: white; }
-        .status-available { background: var(--success); color: white; }
-        .status-on-call { background: var(--warning); color: white; }
-        .status-busy { background: var(--danger); color: white; }
-        .status-offline { background: #6b7280; color: white; }
-
-        .client-item,
-        .employee-item,
-        .call-item {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-
-        .client-item:hover,
-        .employee-item:hover,
-        .call-item:hover {
-            border-color: var(--accent);
-            transform: translateX(4px);
-        }
-
-        .item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .item-title {
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-
-        .item-meta {
-            display: flex;
-            gap: 1rem;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
+            gap: 10px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
 
-        .item-actions {
+        .filter-btn {
+            padding: 8px 16px;
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            color: #888;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            color: #fff;
+            border-color: #4a9eff;
+        }
+
+        .filter-btn.active {
+            background: #4a9eff;
+            color: #fff;
+            border-color: #4a9eff;
+        }
+
+        .call-summary {
+            background: #111;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .call-summary h3 {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .call-counts {
             display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
-        .search-box {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
+        .call-count-item {
+            font-size: 14px;
+            color: #888;
         }
 
-        .search-box:focus {
-            outline: none;
-            border-color: var(--accent);
+        .call-count-item strong {
+            color: #4a9eff;
         }
 
-        .calendar-grid {
-            display: grid;
-            gap: 1rem;
+        .call-item {
+            background: #111;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 12px;
         }
 
-        .calendar-day {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
+        .call-item.today {
+            border-color: #4a9eff;
+            background: #0a1929;
         }
 
-        .calendar-day.today {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        .call-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .day-header {
+        .call-client {
             font-weight: 600;
-            margin-bottom: 0.75rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .call-slot {
-            background: var(--bg-secondary);
-            border-left: 3px solid var(--accent);
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-        }
-
-        .call-slot:last-child {
-            margin-bottom: 0;
+            color: #fff;
         }
 
         .call-time {
-            font-weight: 600;
-            color: var(--accent);
+            color: #4a9eff;
+            font-size: 14px;
         }
 
-        .checklist {
-            margin-top: 1rem;
-        }
-
-        .checklist-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .checklist-item input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .export-box {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-top: 1rem;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-            white-space: pre-wrap;
-            max-height: 400px;
-            overflow-y: auto;
+        .call-details {
+            font-size: 13px;
+            color: #888;
         }
 
         .empty-state {
             text-align: center;
-            padding: 3rem 1rem;
-            color: var(--text-secondary);
-        }
-
-        .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .action-bar {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-group {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
+            padding: 40px 20px;
+            color: #666;
         }
 
         @media (max-width: 768px) {
             .container {
-                padding: 1rem;
+                padding: 15px;
             }
 
-            .header {
-                padding: 1rem;
-            }
-
-            .tabs {
-                padding: 0.75rem 1rem;
+            h1 {
+                font-size: 20px;
             }
 
             .tab {
-                padding: 0.5rem 1rem;
-                font-size: 0.85rem;
+                padding: 10px 16px;
+                font-size: 14px;
             }
 
-            .grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stat-value {
-                font-size: 2rem;
-            }
-
-            .modal-content {
-                padding: 1.5rem;
-            }
-
-            .action-bar {
+            .employee-item, .client-item {
                 flex-direction: column;
+                align-items: flex-start;
             }
 
-            .action-bar .btn {
+            .actions {
                 width: 100%;
-                justify-content: center;
             }
-        }
 
-        .revenue-highlight {
-            background: linear-gradient(135deg, var(--accent) 0%, #357abd 100%);
-            color: white;
-        }
-
-        .alert {
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border-left: 4px solid;
-        }
-
-        .alert-warning {
-            background: rgba(245, 158, 11, 0.1);
-            border-color: var(--warning);
-            color: var(--warning);
-        }
-
-        .alert-info {
-            background: rgba(99, 102, 241, 0.1);
-            border-color: var(--info);
-            color: var(--info);
-        }
-
-        .employee-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 0.5rem;
-        }
-
-        .firebase-status {
-            position: fixed;
-            bottom: 1rem;
-            right: 1rem;
-            padding: 0.5rem 1rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            z-index: 999;
-        }
-
-        .firebase-connected {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-        }
-
-        .firebase-disconnected {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--danger);
+            .actions button {
+                flex: 1;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>🚀 OpenClaw Dashboard</h1>
-        <div class="header-subtitle">Client & Employee Management</div>
-    </div>
-
-    <div class="tabs">
-        <button class="tab active" onclick="switchTab('dashboard')">📊 Dashboard</button>
-        <button class="tab" onclick="switchTab('clients')">👥 Clients</button>
-        <button class="tab" onclick="switchTab('employees')">🧑‍💼 Employees</button>
-        <button class="tab" onclick="switchTab('calendar')">📅 Calendar</button>
-        <button class="tab" onclick="switchTab('briefs')">📋 Briefs</button>
-        <button class="tab" onclick="switchTab('settings')">⚙️ Settings</button>
-    </div>
-
     <div class="container">
-        <!-- Dashboard Tab -->
-        <div id="dashboard" class="tab-content active">
-            <div class="grid">
-                <div class="card stat-card">
-                    <div class="stat-label">Total Clients</div>
-                    <div class="stat-value" id="totalClients">0</div>
-                </div>
-                <div class="card stat-card">
-                    <div class="stat-label">Calls Today</div>
-                    <div class="stat-value" id="callsToday">0</div>
-                </div>
-                <div class="card stat-card revenue-highlight">
-                    <div class="stat-label">Revenue This Month</div>
-                    <div class="stat-value" id="revenueMonth">$0</div>
-                </div>
-                <div class="card stat-card">
-                    <div class="stat-label">Active Employees</div>
-                    <div class="stat-value" id="activeEmployees">0</div>
-                </div>
-            </div>
+        <h1>Employee Dashboard</h1>
 
-            <div class="grid">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">📞 Upcoming Calls (24h)</div>
-                    </div>
-                    <div id="upcomingCalls"></div>
-                </div>
+        <div class="tabs">
+            <button class="tab active" data-tab="employees">Employees</button>
+            <button class="tab" data-tab="clients">Clients</button>
+            <button class="tab" data-tab="schedule">Schedule</button>
+        </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">⚠️ Unassigned Calls</div>
-                    </div>
-                    <div id="unassignedCalls"></div>
-                </div>
-            </div>
-
+        <!-- Employees Tab -->
+        <div class="tab-content active" id="employees">
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title">👥 Employee Availability</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>Team Members</h2>
+                    <button class="btn" onclick="openEmployeeModal()">+ Add Employee</button>
                 </div>
-                <div id="employeeStatus"></div>
+                <div class="employee-list" id="employeeList"></div>
             </div>
         </div>
 
         <!-- Clients Tab -->
-        <div id="clients" class="tab-content">
-            <div class="action-bar">
-                <button class="btn" onclick="openClientModal()">➕ Add Client</button>
-                <input type="text" class="search-box" id="clientSearch" placeholder="🔍 Search clients..." style="flex: 1; margin: 0;">
-            </div>
-            <div class="filter-group" style="margin-bottom: 1rem;">
-                <label style="color: var(--text-secondary);">Filter:</label>
-                <select id="clientFilter" class="btn btn-secondary btn-small" onchange="filterClients()">
-                    <option value="all">All Clients</option>
-                    <option value="new">New</option>
-                    <option value="scheduled">Scheduled</option>
-                    <option value="in-progress">In Progress</option>
-                    <option value="completed">Completed</option>
-                </select>
-            </div>
-            <div id="clientsList"></div>
-        </div>
-
-        <!-- Employees Tab -->
-        <div id="employees" class="tab-content">
-            <div class="action-bar">
-                <button class="btn" onclick="openEmployeeModal()">➕ Add Employee</button>
-            </div>
-            <div id="employeesList"></div>
-        </div>
-
-        <!-- Calendar Tab -->
-        <div id="calendar" class="tab-content">
-            <div class="action-bar">
-                <button class="btn" onclick="openCallModal()">➕ Schedule Call</button>
-            </div>
-            <div id="calendarView"></div>
-        </div>
-
-        <!-- Briefs Tab -->
-        <div id="briefs" class="tab-content">
-            <input type="text" class="search-box" id="briefSearch" placeholder="🔍 Search briefs..." style="margin-bottom: 1rem;">
-            <div id="briefsList"></div>
-        </div>
-
-        <!-- Settings Tab -->
-        <div id="settings" class="tab-content">
+        <div class="tab-content" id="clients">
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title">💾 Data Management</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>Clients</h2>
+                    <button class="btn" onclick="openClientModal()">+ Add Client</button>
                 </div>
-                <div class="action-bar">
-                    <button class="btn btn-secondary" onclick="exportData()">⬇️ Export JSON</button>
-                    <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">⬆️ Import JSON</button>
-                    <button class="btn btn-danger" onclick="clearAllData()">🗑️ Clear All Data</button>
-                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all" onclick="filterClients('all')">All</button>
+                    <button class="filter-btn" data-filter="unassigned" onclick="filterClients('unassigned')">Unassigned</button>
+                    <button class="filter-btn" data-filter="assigned" onclick="filterClients('assigned')">Assigned</button>
+                    <button class="filter-btn" data-filter="scheduled" onclick="filterClients('scheduled')">Call Scheduled</button>
+                    <button class="filter-btn" data-filter="completed" onclick="filterClients('completed')">Completed</button>
                 </div>
-            </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">🔥 Firebase Sync</div>
-                </div>
-                <div class="input-group">
-                    <label>Firebase API Key</label>
-                    <input type="password" id="firebaseApiKey" placeholder="Enter Firebase API Key">
-                </div>
-                <div class="input-group">
-                    <label>Database URL</label>
-                    <input type="text" id="firebaseDatabaseUrl" placeholder="https://your-project.firebaseio.com">
-                </div>
-                <button class="btn" onclick="connectFirebase()">🔗 Connect Firebase</button>
-                <button class="btn btn-secondary" onclick="disconnectFirebase()">🔌 Disconnect</button>
+                <div class="client-list" id="clientList"></div>
             </div>
         </div>
-    </div>
 
-    <!-- Client Modal -->
-    <div id="clientModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Client Details</div>
-                <button class="close-btn" onclick="closeModal('clientModal')">✕</button>
+        <!-- Schedule Tab -->
+        <div class="tab-content" id="schedule">
+            <div class="card">
+                <h2>Call Schedule</h2>
+                
+                <div class="call-summary" id="callSummary"></div>
+                
+                <div id="scheduleList"></div>
             </div>
-            <form id="clientForm" onsubmit="saveClient(event)">
-                <input type="hidden" id="clientId">
-                <div class="input-group">
-                    <label>Client Name *</label>
-                    <input type="text" id="clientName" required>
-                </div>
-                <div class="input-group">
-                    <label>Email *</label>
-                    <input type="email" id="clientEmail" required>
-                </div>
-                <div class="input-group">
-                    <label>Business</label>
-                    <input type="text" id="clientBusiness">
-                </div>
-                <div class="input-group">
-                    <label>What They Want</label>
-                    <textarea id="clientNeeds"></textarea>
-                </div>
-                <div class="input-group">
-                    <label>Hardware</label>
-                    <input type="text" id="clientHardware">
-                </div>
-                <div class="input-group">
-                    <label>API Keys They Have</label>
-                    <textarea id="clientApiKeys"></textarea>
-                </div>
-                <div class="input-group">
-                    <label>Plan / Pricing</label>
-                    <input type="text" id="clientPlan">
-                </div>
-                <div class="input-group">
-                    <label>Call Notes</label>
-                    <textarea id="clientNotes"></textarea>
-                </div>
-                <div class="input-group">
-                    <label>Status</label>
-                    <select id="clientStatus">
-                        <option value="new">New</option>
-                        <option value="scheduled">Scheduled</option>
-                        <option value="in-progress">In Progress</option>
-                        <option value="completed">Completed</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Deliverables (one per line)</label>
-                    <textarea id="clientDeliverables" placeholder="Setup OpenClaw&#10;Configure agents&#10;Train client"></textarea>
-                </div>
-                <div class="action-bar">
-                    <button type="submit" class="btn">💾 Save</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('clientModal')">Cancel</button>
-                </div>
-            </form>
         </div>
     </div>
 
     <!-- Employee Modal -->
-    <div id="employeeModal" class="modal">
+    <div class="modal" id="employeeModal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">Employee Details</div>
-                <button class="close-btn" onclick="closeModal('employeeModal')">✕</button>
+                <h2 id="employeeModalTitle">Add Employee</h2>
+                <button class="close-modal" onclick="closeEmployeeModal()">×</button>
             </div>
             <form id="employeeForm" onsubmit="saveEmployee(event)">
                 <input type="hidden" id="employeeId">
-                <div class="input-group">
+                <div class="form-group">
                     <label>Name *</label>
                     <input type="text" id="employeeName" required>
                 </div>
-                <div class="input-group">
-                    <label>Role</label>
-                    <input type="text" id="employeeRole">
-                </div>
-                <div class="input-group">
-                    <label>Timezone</label>
-                    <input type="text" id="employeeTimezone" placeholder="e.g., HKT, PST, EST">
-                </div>
-                <div class="input-group">
-                    <label>Availability</label>
-                    <input type="text" id="employeeAvailability" placeholder="e.g., Mon-Fri 9am-5pm">
-                </div>
-                <div class="input-group">
-                    <label>Contact Info</label>
+                <div class="form-group">
+                    <label>Contact (WhatsApp/Telegram)</label>
                     <input type="text" id="employeeContact">
                 </div>
-                <div class="input-group">
-                    <label>Status</label>
-                    <select id="employeeStatus">
+                <div class="form-group">
+                    <label>Timezone</label>
+                    <input type="text" id="employeeTimezone" placeholder="e.g., UTC+8, EST">
+                </div>
+                <div class="form-group">
+                    <label>Hourly Rate ($)</label>
+                    <input type="number" id="employeeRate" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Status *</label>
+                    <select id="employeeStatus" required>
                         <option value="available">Available</option>
-                        <option value="on-call">On Call</option>
                         <option value="busy">Busy</option>
                         <option value="offline">Offline</option>
                     </select>
                 </div>
-                <div class="input-group">
-                    <label>Color (for calendar)</label>
-                    <input type="color" id="employeeColor">
-                </div>
-                <div class="action-bar">
-                    <button type="submit" class="btn">💾 Save</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('employeeModal')">Cancel</button>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn" style="flex: 1;">Save</button>
+                    <button type="button" class="btn" style="flex: 1; background: #444;" onclick="closeEmployeeModal()">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Call Modal -->
-    <div id="callModal" class="modal">
+    <!-- Client Modal -->
+    <div class="modal" id="clientModal">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">Schedule Call</div>
-                <button class="close-btn" onclick="closeModal('callModal')">✕</button>
+                <h2 id="clientModalTitle">Add Client</h2>
+                <button class="close-modal" onclick="closeClientModal()">×</button>
             </div>
-            <form id="callForm" onsubmit="saveCall(event)">
-                <input type="hidden" id="callId">
-                <div class="input-group">
-                    <label>Client *</label>
-                    <select id="callClient" required></select>
+            <form id="clientForm" onsubmit="saveClient(event)">
+                <input type="hidden" id="clientId">
+                <div class="form-group">
+                    <label>Client Name *</label>
+                    <input type="text" id="clientName" required>
                 </div>
-                <div class="input-group">
-                    <label>Assigned To</label>
-                    <select id="callEmployee">
+                <div class="form-group">
+                    <label>Plan *</label>
+                    <select id="clientPlan" required>
+                        <option value="99">Basic ($99)</option>
+                        <option value="199">Pro ($199)</option>
+                        <option value="249">Pro+ ($249)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>What They Need</label>
+                    <textarea id="clientNeeds" placeholder="Brief summary of setup requirements"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Assign To</label>
+                    <select id="clientAssignee">
                         <option value="">Unassigned</option>
                     </select>
                 </div>
-                <div class="input-group">
-                    <label>Date & Time *</label>
-                    <input type="datetime-local" id="callDateTime" required>
+                <div class="form-group">
+                    <label>Status *</label>
+                    <select id="clientStatus" required>
+                        <option value="unassigned">Unassigned</option>
+                        <option value="assigned">Assigned</option>
+                        <option value="scheduled">Call Scheduled</option>
+                        <option value="completed">Completed</option>
+                    </select>
                 </div>
-                <div class="input-group">
-                    <label>Timezone</label>
-                    <input type="text" id="callTimezone" placeholder="e.g., HKT">
+                <div class="form-group">
+                    <label>Call Date & Time</label>
+                    <input type="datetime-local" id="clientCallTime">
                 </div>
-                <div class="input-group">
-                    <label>Brief Summary</label>
-                    <textarea id="callSummary"></textarea>
-                </div>
-                <div class="action-bar">
-                    <button type="submit" class="btn">💾 Save</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('callModal')">Cancel</button>
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="submit" class="btn" style="flex: 1;">Save</button>
+                    <button type="button" class="btn" style="flex: 1; background: #444;" onclick="closeClientModal()">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Brief View Modal -->
-    <div id="briefModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Client Brief</div>
-                <button class="close-btn" onclick="closeModal('briefModal')">✕</button>
-            </div>
-            <div id="briefContent"></div>
-            <div class="action-bar">
-                <button class="btn" onclick="copyBrief()">📋 Copy to Clipboard</button>
-                <button class="btn btn-secondary" onclick="closeModal('briefModal')">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="firebase-status">
-        <span id="firebaseIndicator" class="firebase-disconnected"></span>
-        <span id="firebaseStatusText">Offline</span>
-    </div>
-
-    <script type="module">
-        // Data structures
-        let clients = [];
+    <script>
+        // Initialize data
         let employees = [];
-        let calls = [];
-        let firebaseDB = null;
-        let firebaseConnected = false;
+        let clients = [];
+        let currentFilter = 'all';
+        let editingEmployeeId = null;
+        let editingClientId = null;
 
-        // Initialize with sample data
-        function initializeData() {
-            const savedClients = localStorage.getItem('clients');
+        // Load data from localStorage or use defaults
+        function loadData() {
             const savedEmployees = localStorage.getItem('employees');
-            const savedCalls = localStorage.getItem('calls');
-
-            if (savedClients) {
-                clients = JSON.parse(savedClients);
-            } else {
-                // Pre-populate sample data
-                clients = [
-                    {
-                        id: Date.now() + 1,
-                        name: 'Indrayudh',
-                        email: 'indrayudh@example.com',
-                        business: 'Lead Generation',
-                        needs: 'Pro setup with upsell features for lead generation automation',
-                        hardware: 'Mac M1, iPhone 14 Pro',
-                        apiKeys: 'OpenAI API, Anthropic API',
-                        plan: 'Pro + Upsell - $500/month',
-                        notes: 'Looking to automate lead gen workflows, needs custom agent setup',
-                        status: 'in-progress',
-                        deliverables: ['Setup OpenClaw Pro', 'Configure lead gen agents', 'Integration with CRM', 'Training session'],
-                        createdAt: Date.now()
-                    },
-                    {
-                        id: Date.now() + 2,
-                        name: 'Ali Howard',
-                        email: 'ali@ecommerce.com',
-                        business: 'E-commerce',
-                        needs: 'Basic setup for e-commerce automation',
-                        hardware: 'Windows PC, Android phone',
-                        apiKeys: 'OpenAI API',
-                        plan: 'Basic - $99/month',
-                        notes: 'Wants to automate product descriptions and customer service',
-                        status: 'scheduled',
-                        deliverables: ['Setup OpenClaw Basic', 'E-commerce agent config', 'Documentation'],
-                        createdAt: Date.now()
-                    },
-                    {
-                        id: Date.now() + 3,
-                        name: 'Russie Bot Client',
-                        email: 'russie@botservice.com',
-                        business: 'Bot Services',
-                        needs: 'Help with model configuration and optimization',
-                        hardware: 'Mac Pro, Multiple devices',
-                        apiKeys: 'OpenAI, Anthropic, Google AI',
-                        plan: 'Consulting - $200/hour',
-                        notes: 'Existing user, needs advanced model config help',
-                        status: 'new',
-                        deliverables: ['Model optimization', 'Agent fine-tuning', 'Best practices guide'],
-                        createdAt: Date.now()
-                    }
-                ];
-            }
+            const savedClients = localStorage.getItem('clients');
 
             if (savedEmployees) {
                 employees = JSON.parse(savedEmployees);
             } else {
+                // Default employees
                 employees = [
                     {
                         id: Date.now() + 1,
-                        name: 'Ty',
-                        role: 'Sales / Founder',
-                        timezone: 'HKT',
-                        availability: 'Mon-Sun 8am-11pm',
-                        contact: 'ty@openclaw.com',
+                        name: 'Jaiden',
+                        contact: 'WhatsApp: +1234567890',
+                        timezone: 'UTC-5',
+                        rate: 0,
                         status: 'available',
-                        color: '#4a90e2'
+                        role: 'Partner, setup calls'
                     },
                     {
                         id: Date.now() + 2,
-                        name: 'Jaiden',
-                        role: 'Setup Calls / Partner',
-                        timezone: 'PST',
-                        availability: 'Mon-Fri 9am-6pm',
-                        contact: 'jaiden@openclaw.com',
+                        name: 'Abhishek V.',
+                        contact: 'Telegram: @abhishek',
+                        timezone: 'IST',
+                        rate: 25,
                         status: 'available',
-                        color: '#10b981'
+                        role: 'Contractor'
+                    },
+                    {
+                        id: Date.now() + 3,
+                        name: 'Muhammad',
+                        contact: 'WhatsApp: +9876543210',
+                        timezone: 'UTC+5',
+                        rate: 20,
+                        status: 'offline',
+                        role: 'Contractor'
                     }
                 ];
             }
 
-            if (savedCalls) {
-                calls = JSON.parse(savedCalls);
+            if (savedClients) {
+                clients = JSON.parse(savedClients);
+            } else {
+                // Default clients
+                const jaiden = employees.find(e => e.name === 'Jaiden');
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                tomorrow.setHours(14, 0, 0, 0);
+
+                clients = [
+                    {
+                        id: Date.now() + 1,
+                        name: 'Indrayudh',
+                        plan: '249',
+                        needs: 'Pro+upsell, needs full setup',
+                        assignedTo: jaiden ? jaiden.id : null,
+                        status: 'scheduled',
+                        callTime: tomorrow.toISOString().slice(0, 16)
+                    },
+                    {
+                        id: Date.now() + 2,
+                        name: 'Ali Howard',
+                        plan: '99',
+                        needs: 'Basic setup',
+                        assignedTo: null,
+                        status: 'unassigned',
+                        callTime: null
+                    },
+                    {
+                        id: Date.now() + 3,
+                        name: 'Russie Bot',
+                        plan: '199',
+                        needs: 'Troubleshoot existing setup',
+                        assignedTo: null,
+                        status: 'unassigned',
+                        callTime: null
+                    }
+                ];
             }
 
-            saveToLocalStorage();
-            render();
+            saveData();
         }
 
-        // Save to localStorage
-        function saveToLocalStorage() {
-            localStorage.setItem('clients', JSON.stringify(clients));
+        function saveData() {
             localStorage.setItem('employees', JSON.stringify(employees));
-            localStorage.setItem('calls', JSON.stringify(calls));
+            localStorage.setItem('clients', JSON.stringify(clients));
         }
 
         // Tab switching
-        window.switchTab = function(tabName) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+                
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(targetTab).classList.add('active');
+
+                if (targetTab === 'schedule') {
+                    renderSchedule();
+                }
+            });
+        });
+
+        // Employee functions
+        function renderEmployees() {
+            const list = document.getElementById('employeeList');
             
-            event.target.classList.add('active');
-            document.getElementById(tabName).classList.add('active');
-
-            if (tabName === 'calendar') {
-                renderCalendar();
-            } else if (tabName === 'briefs') {
-                renderBriefs();
-            }
-        };
-
-        // Modal management
-        window.openClientModal = function(clientId = null) {
-            document.getElementById('clientForm').reset();
-            if (clientId) {
-                const client = clients.find(c => c.id === clientId);
-                if (client) {
-                    document.getElementById('clientId').value = client.id;
-                    document.getElementById('clientName').value = client.name;
-                    document.getElementById('clientEmail').value = client.email;
-                    document.getElementById('clientBusiness').value = client.business || '';
-                    document.getElementById('clientNeeds').value = client.needs || '';
-                    document.getElementById('clientHardware').value = client.hardware || '';
-                    document.getElementById('clientApiKeys').value = client.apiKeys || '';
-                    document.getElementById('clientPlan').value = client.plan || '';
-                    document.getElementById('clientNotes').value = client.notes || '';
-                    document.getElementById('clientStatus').value = client.status;
-                    document.getElementById('clientDeliverables').value = (client.deliverables || []).join('\n');
-                }
-            }
-            document.getElementById('clientModal').classList.add('active');
-        };
-
-        window.openEmployeeModal = function(employeeId = null) {
-            document.getElementById('employeeForm').reset();
-            if (employeeId) {
-                const employee = employees.find(e => e.id === employeeId);
-                if (employee) {
-                    document.getElementById('employeeId').value = employee.id;
-                    document.getElementById('employeeName').value = employee.name;
-                    document.getElementById('employeeRole').value = employee.role || '';
-                    document.getElementById('employeeTimezone').value = employee.timezone || '';
-                    document.getElementById('employeeAvailability').value = employee.availability || '';
-                    document.getElementById('employeeContact').value = employee.contact || '';
-                    document.getElementById('employeeStatus').value = employee.status;
-                    document.getElementById('employeeColor').value = employee.color || '#4a90e2';
-                }
-            } else {
-                document.getElementById('employeeColor').value = '#4a90e2';
-            }
-            document.getElementById('employeeModal').classList.add('active');
-        };
-
-        window.openCallModal = function(callId = null) {
-            // Populate client dropdown
-            const clientSelect = document.getElementById('callClient');
-            clientSelect.innerHTML = clients.map(c => 
-                `<option value="${c.id}">${c.name}</option>`
-            ).join('');
-
-            // Populate employee dropdown
-            const employeeSelect = document.getElementById('callEmployee');
-            employeeSelect.innerHTML = '<option value="">Unassigned</option>' + 
-                employees.map(e => `<option value="${e.id}">${e.name}</option>`).join('');
-
-            document.getElementById('callForm').reset();
-            if (callId) {
-                const call = calls.find(c => c.id === callId);
-                if (call) {
-                    document.getElementById('callId').value = call.id;
-                    document.getElementById('callClient').value = call.clientId;
-                    document.getElementById('callEmployee').value = call.employeeId || '';
-                    document.getElementById('callDateTime').value = call.dateTime;
-                    document.getElementById('callTimezone').value = call.timezone || '';
-                    document.getElementById('callSummary').value = call.summary || '';
-                }
-            }
-            document.getElementById('callModal').classList.add('active');
-        };
-
-        window.closeModal = function(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-        };
-
-        // Save functions
-        window.saveClient = function(e) {
-            e.preventDefault();
-            const id = document.getElementById('clientId').value;
-            const deliverables = document.getElementById('clientDeliverables').value
-                .split('\n')
-                .filter(d => d.trim())
-                .map(d => d.trim());
-
-            const clientData = {
-                name: document.getElementById('clientName').value,
-                email: document.getElementById('clientEmail').value,
-                business: document.getElementById('clientBusiness').value,
-                needs: document.getElementById('clientNeeds').value,
-                hardware: document.getElementById('clientHardware').value,
-                apiKeys: document.getElementById('clientApiKeys').value,
-                plan: document.getElementById('clientPlan').value,
-                notes: document.getElementById('clientNotes').value,
-                status: document.getElementById('clientStatus').value,
-                deliverables: deliverables
-            };
-
-            if (id) {
-                const index = clients.findIndex(c => c.id == id);
-                clients[index] = { ...clients[index], ...clientData };
-            } else {
-                clients.push({
-                    id: Date.now(),
-                    ...clientData,
-                    createdAt: Date.now()
-                });
+            if (employees.length === 0) {
+                list.innerHTML = '<div class="empty-state">No employees yet. Add one to get started!</div>';
+                return;
             }
 
-            saveToLocalStorage();
-            syncToFirebase();
-            render();
-            closeModal('clientModal');
-        };
-
-        window.saveEmployee = function(e) {
-            e.preventDefault();
-            const id = document.getElementById('employeeId').value;
-
-            const employeeData = {
-                name: document.getElementById('employeeName').value,
-                role: document.getElementById('employeeRole').value,
-                timezone: document.getElementById('employeeTimezone').value,
-                availability: document.getElementById('employeeAvailability').value,
-                contact: document.getElementById('employeeContact').value,
-                status: document.getElementById('employeeStatus').value,
-                color: document.getElementById('employeeColor').value
-            };
-
-            if (id) {
-                const index = employees.findIndex(e => e.id == id);
-                employees[index] = { ...employees[index], ...employeeData };
-            } else {
-                employees.push({
-                    id: Date.now(),
-                    ...employeeData
-                });
-            }
-
-            saveToLocalStorage();
-            syncToFirebase();
-            render();
-            closeModal('employeeModal');
-        };
-
-        window.saveCall = function(e) {
-            e.preventDefault();
-            const id = document.getElementById('callId').value;
-
-            const callData = {
-                clientId: parseInt(document.getElementById('callClient').value),
-                employeeId: document.getElementById('callEmployee').value ? parseInt(document.getElementById('callEmployee').value) : null,
-                dateTime: document.getElementById('callDateTime').value,
-                timezone: document.getElementById('callTimezone').value,
-                summary: document.getElementById('callSummary').value
-            };
-
-            if (id) {
-                const index = calls.findIndex(c => c.id == id);
-                calls[index] = { ...calls[index], ...callData };
-            } else {
-                calls.push({
-                    id: Date.now(),
-                    ...callData
-                });
-            }
-
-            saveToLocalStorage();
-            syncToFirebase();
-            render();
-            closeModal('callModal');
-        };
-
-        // Delete functions
-        window.deleteClient = function(id) {
-            if (confirm('Are you sure you want to delete this client?')) {
-                clients = clients.filter(c => c.id !== id);
-                calls = calls.filter(c => c.clientId !== id);
-                saveToLocalStorage();
-                syncToFirebase();
-                render();
-            }
-        };
-
-        window.deleteEmployee = function(id) {
-            if (confirm('Are you sure you want to delete this employee?')) {
-                employees = employees.filter(e => e.id !== id);
-                calls.forEach(call => {
-                    if (call.employeeId === id) {
-                        call.employeeId = null;
-                    }
-                });
-                saveToLocalStorage();
-                syncToFirebase();
-                render();
-            }
-        };
-
-        window.deleteCall = function(id) {
-            if (confirm('Are you sure you want to delete this call?')) {
-                calls = calls.filter(c => c.id !== id);
-                saveToLocalStorage();
-                syncToFirebase();
-                render();
-            }
-        };
-
-        // Render functions
-        function render() {
-            renderDashboard();
-            renderClients();
-            renderEmployees();
+            list.innerHTML = employees.map(emp => `
+                <div class="employee-item">
+                    <div class="employee-info">
+                        <div class="employee-name">${emp.name}</div>
+                        <div class="employee-details">
+                            <span class="status-badge status-${emp.status}">${emp.status}</span>
+                            ${emp.contact || 'No contact'} | ${emp.timezone || 'No timezone'} | $${emp.rate || 0}/hr
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-small" onclick="editEmployee(${emp.id})">Edit</button>
+                        <button class="btn btn-small btn-danger" onclick="deleteEmployee(${emp.id})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        function renderDashboard() {
-            // Stats
-            document.getElementById('totalClients').textContent = clients.length;
+        function openEmployeeModal(id = null) {
+            editingEmployeeId = id;
+            const modal = document.getElementById('employeeModal');
+            const title = document.getElementById('employeeModalTitle');
             
-            const today = new Date().toDateString();
-            const callsToday = calls.filter(c => {
-                const callDate = new Date(c.dateTime).toDateString();
-                return callDate === today;
-            }).length;
-            document.getElementById('callsToday').textContent = callsToday;
+            if (id) {
+                const emp = employees.find(e => e.id === id);
+                title.textContent = 'Edit Employee';
+                document.getElementById('employeeId').value = emp.id;
+                document.getElementById('employeeName').value = emp.name;
+                document.getElementById('employeeContact').value = emp.contact || '';
+                document.getElementById('employeeTimezone').value = emp.timezone || '';
+                document.getElementById('employeeRate').value = emp.rate || '';
+                document.getElementById('employeeStatus').value = emp.status;
+            } else {
+                title.textContent = 'Add Employee';
+                document.getElementById('employeeForm').reset();
+            }
+            
+            modal.classList.add('active');
+        }
 
-            // Calculate revenue this month
-            const thisMonth = new Date().getMonth();
-            const thisYear = new Date().getFullYear();
-            const monthlyRevenue = clients.reduce((sum, client) => {
-                if (client.plan) {
-                    const match = client.plan.match(/\$(\d+)/);
-                    if (match) {
-                        return sum + parseInt(match[1]);
+        function closeEmployeeModal() {
+            document.getElementById('employeeModal').classList.remove('active');
+            editingEmployeeId = null;
+        }
+
+        function saveEmployee(e) {
+            e.preventDefault();
+            
+            const id = editingEmployeeId || Date.now();
+            const employee = {
+                id: id,
+                name: document.getElementById('employeeName').value,
+                contact: document.getElementById('employeeContact').value,
+                timezone: document.getElementById('employeeTimezone').value,
+                rate: parseFloat(document.getElementById('employeeRate').value) || 0,
+                status: document.getElementById('employeeStatus').value
+            };
+
+            if (editingEmployeeId) {
+                const index = employees.findIndex(e => e.id === editingEmployeeId);
+                employees[index] = employee;
+            } else {
+                employees.push(employee);
+            }
+
+            saveData();
+            renderEmployees();
+            updateClientAssigneeOptions();
+            closeEmployeeModal();
+        }
+
+        function editEmployee(id) {
+            openEmployeeModal(id);
+        }
+
+        function deleteEmployee(id) {
+            if (confirm('Are you sure you want to delete this employee?')) {
+                employees = employees.filter(e => e.id !== id);
+                // Unassign any clients
+                clients.forEach(c => {
+                    if (c.assignedTo === id) {
+                        c.assignedTo = null;
+                        c.status = 'unassigned';
                     }
-                }
-                return sum;
-            }, 0);
-            document.getElementById('revenueMonth').textContent = `$${monthlyRevenue}`;
-
-            const activeEmployees = employees.filter(e => e.status !== 'offline').length;
-            document.getElementById('activeEmployees').textContent = activeEmployees;
-
-            // Upcoming calls (next 24h)
-            const now = new Date();
-            const next24h = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-            const upcomingCalls = calls.filter(c => {
-                const callDate = new Date(c.dateTime);
-                return callDate > now && callDate < next24h;
-            }).sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
-
-            const upcomingCallsEl = document.getElementById('upcomingCalls');
-            if (upcomingCalls.length === 0) {
-                upcomingCallsEl.innerHTML = '<div class="empty-state"><div style="color: var(--text-secondary);">No upcoming calls</div></div>';
-            } else {
-                upcomingCallsEl.innerHTML = upcomingCalls.map(call => {
-                    const client = clients.find(c => c.id === call.clientId);
-                    const employee = employees.find(e => e.id === call.employeeId);
-                    const date = new Date(call.dateTime);
-                    return `
-                        <div class="call-slot" style="border-color: ${employee ? employee.color : 'var(--accent)'}">
-                            <div class="call-time">${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} ${call.timezone || ''}</div>
-                            <div><strong>${client ? client.name : 'Unknown'}</strong></div>
-                            <div style="font-size: 0.8rem; color: var(--text-secondary);">
-                                ${employee ? employee.name : 'Unassigned'} • ${client ? client.plan : ''}
-                            </div>
-                        </div>
-                    `;
-                }).join('');
+                });
+                saveData();
+                renderEmployees();
+                renderClients();
             }
+        }
 
-            // Unassigned calls
-            const unassignedCalls = calls.filter(c => !c.employeeId && new Date(c.dateTime) > now);
-            const unassignedEl = document.getElementById('unassignedCalls');
-            if (unassignedCalls.length === 0) {
-                unassignedEl.innerHTML = '<div class="empty-state"><div style="color: var(--text-secondary);">All calls assigned ✓</div></div>';
-            } else {
-                unassignedEl.innerHTML = `<div class="alert alert-warning">⚠️ ${unassignedCalls.length} calls need assignment</div>` +
-                    unassignedCalls.map(call => {
-                        const client = clients.find(c => c.id === call.clientId);
-                        const date = new Date(call.dateTime);
-                        return `
-                            <div class="call-slot" onclick="openCallModal(${call.id})" style="cursor: pointer;">
-                                <div class="call-time">${date.toLocaleDateString()} ${date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-                                <div><strong>${client ? client.name : 'Unknown'}</strong></div>
-                                <div style="font-size: 0.8rem; color: var(--text-secondary);">Click to assign</div>
-                            </div>
-                        `;
-                    }).join('');
-            }
-
-            // Employee status
-            const employeeStatusEl = document.getElementById('employeeStatus');
-            if (employees.length === 0) {
-                employeeStatusEl.innerHTML = '<div class="empty-state"><div style="color: var(--text-secondary);">No employees yet</div></div>';
-            } else {
-                employeeStatusEl.innerHTML = employees.map(emp => {
-                    const empCalls = calls.filter(c => c.employeeId === emp.id && new Date(c.dateTime) > now);
-                    return `
-                        <div class="employee-item">
-                            <div class="item-header">
-                                <div class="item-title">
-                                    <span class="employee-color" style="background: ${emp.color}"></span>
-                                    ${emp.name}
-                                </div>
-                                <span class="status-badge status-${emp.status}">${emp.status}</span>
-                            </div>
-                            <div class="item-meta">
-                                <span>📍 ${emp.timezone}</span>
-                                <span>📞 ${empCalls.length} scheduled calls</span>
-                                <span>${emp.role}</span>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            }
+        // Client functions
+        function updateClientAssigneeOptions() {
+            const select = document.getElementById('clientAssignee');
+            select.innerHTML = '<option value="">Unassigned</option>' + 
+                employees.map(emp => `<option value="${emp.id}">${emp.name}</option>`).join('');
         }
 
         function renderClients() {
-            const search = document.getElementById('clientSearch')?.value.toLowerCase() || '';
-            const filter = document.getElementById('clientFilter')?.value || 'all';
+            const list = document.getElementById('clientList');
+            let filtered = clients;
 
-            let filtered = clients.filter(c => {
-                const matchesSearch = !search || 
-                    c.name.toLowerCase().includes(search) ||
-                    c.email.toLowerCase().includes(search) ||
-                    c.business?.toLowerCase().includes(search);
-                const matchesFilter = filter === 'all' || c.status === filter;
-                return matchesSearch && matchesFilter;
-            });
+            if (currentFilter !== 'all') {
+                filtered = clients.filter(c => c.status === currentFilter);
+            }
 
-            const clientsList = document.getElementById('clientsList');
             if (filtered.length === 0) {
-                clientsList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">👥</div><div>No clients found</div></div>';
-            } else {
-                clientsList.innerHTML = filtered.map(client => `
-                    <div class="client-item" onclick="openClientModal(${client.id})">
-                        <div class="item-header">
-                            <div class="item-title">${client.name}</div>
-                            <span class="status-badge status-${client.status}">${client.status}</span>
-                        </div>
-                        <div class="item-meta">
-                            <span>📧 ${client.email}</span>
-                            ${client.business ? `<span>🏢 ${client.business}</span>` : ''}
-                            ${client.plan ? `<span>💰 ${client.plan}</span>` : ''}
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn btn-small btn-secondary" onclick="event.stopPropagation(); viewBrief(${client.id})">📋 View Brief</button>
-                            <button class="btn btn-small btn-secondary" onclick="event.stopPropagation(); openClientModal(${client.id})">✏️ Edit</button>
-                            <button class="btn btn-small btn-danger" onclick="event.stopPropagation(); deleteClient(${client.id})">🗑️ Delete</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function renderEmployees() {
-            const employeesList = document.getElementById('employeesList');
-            if (employees.length === 0) {
-                employeesList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🧑‍💼</div><div>No employees yet</div></div>';
-            } else {
-                employeesList.innerHTML = employees.map(emp => {
-                    const empCalls = calls.filter(c => c.employeeId === emp.id);
-                    return `
-                        <div class="employee-item">
-                            <div class="item-header">
-                                <div class="item-title">
-                                    <span class="employee-color" style="background: ${emp.color}"></span>
-                                    ${emp.name}
-                                </div>
-                                <span class="status-badge status-${emp.status}">${emp.status}</span>
-                            </div>
-                            <div class="item-meta">
-                                <span>👔 ${emp.role || 'N/A'}</span>
-                                <span>📍 ${emp.timezone || 'N/A'}</span>
-                                <span>📞 ${empCalls.length} calls</span>
-                                ${emp.contact ? `<span>📧 ${emp.contact}</span>` : ''}
-                            </div>
-                            ${emp.availability ? `<div style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.85rem;">🕒 ${emp.availability}</div>` : ''}
-                            <div class="item-actions">
-                                <button class="btn btn-small btn-secondary" onclick="openEmployeeModal(${emp.id})">✏️ Edit</button>
-                                <button class="btn btn-small btn-danger" onclick="deleteEmployee(${emp.id})">🗑️ Delete</button>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-            }
-        }
-
-        function renderCalendar() {
-            const calendarView = document.getElementById('calendarView');
-            const today = new Date();
-            const next7Days = [];
-
-            for (let i = 0; i < 7; i++) {
-                const date = new Date(today);
-                date.setDate(today.getDate() + i);
-                next7Days.push(date);
+                list.innerHTML = '<div class="empty-state">No clients found.</div>';
+                return;
             }
 
-            calendarView.innerHTML = next7Days.map(date => {
-                const dateStr = date.toDateString();
-                const isToday = dateStr === today.toDateString();
-                const dayCalls = calls.filter(c => {
-                    return new Date(c.dateTime).toDateString() === dateStr;
-                }).sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
-
+            list.innerHTML = filtered.map(client => {
+                const assignee = employees.find(e => e.id === client.assignedTo);
+                const planName = client.plan === '99' ? 'Basic' : client.plan === '199' ? 'Pro' : 'Pro+';
+                
                 return `
-                    <div class="calendar-day ${isToday ? 'today' : ''}">
-                        <div class="day-header">
-                            ${date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
-                            ${isToday ? '(Today)' : ''}
+                    <div class="client-item">
+                        <div class="client-info">
+                            <div class="client-name">${client.name}</div>
+                            <div class="client-details">
+                                <span class="status-badge status-${client.status}">${client.status.replace('_', ' ')}</span>
+                                ${planName} ($${client.plan}) | ${client.needs || 'No details'}
+                                ${assignee ? `<br>Assigned to: <strong>${assignee.name}</strong>` : ''}
+                                ${client.callTime ? `<br>Call: ${formatDateTime(client.callTime)}` : ''}
+                            </div>
                         </div>
-                        ${dayCalls.length === 0 ? '<div style="color: var(--text-secondary); font-size: 0.85rem;">No calls scheduled</div>' : ''}
-                        ${dayCalls.map(call => {
-                            const client = clients.find(c => c.id === call.clientId);
-                            const employee = employees.find(e => e.id === call.employeeId);
-                            const time = new Date(call.dateTime);
-                            return `
-                                <div class="call-slot" style="border-color: ${employee ? employee.color : '#666'}" onclick="openCallModal(${call.id})">
-                                    <div class="call-time">${time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} ${call.timezone || ''}</div>
-                                    <div><strong>${client ? client.name : 'Unknown'}</strong></div>
-                                    <div style="font-size: 0.8rem; color: var(--text-secondary);">
-                                        ${employee ? employee.name : '⚠️ Unassigned'} ${client ? '• ' + client.plan : ''}
-                                    </div>
-                                    ${call.summary ? `<div style="font-size: 0.75rem; margin-top: 0.25rem; color: var(--text-secondary);">${call.summary}</div>` : ''}
-                                </div>
-                            `;
-                        }).join('')}
+                        <div class="actions">
+                            <button class="btn btn-small" onclick="editClient(${client.id})">Edit</button>
+                            <button class="btn btn-small btn-danger" onclick="deleteClient(${client.id})">Delete</button>
+                        </div>
                     </div>
                 `;
             }).join('');
         }
 
-        function renderBriefs() {
-            const search = document.getElementById('briefSearch')?.value.toLowerCase() || '';
-            let filtered = clients.filter(c => {
-                return !search || 
-                    c.name.toLowerCase().includes(search) ||
-                    c.business?.toLowerCase().includes(search);
+        function filterClients(status) {
+            currentFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.filter === status);
             });
+            renderClients();
+        }
 
-            const briefsList = document.getElementById('briefsList');
-            if (filtered.length === 0) {
-                briefsList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div><div>No briefs found</div></div>';
+        function openClientModal(id = null) {
+            editingClientId = id;
+            const modal = document.getElementById('clientModal');
+            const title = document.getElementById('clientModalTitle');
+            updateClientAssigneeOptions();
+            
+            if (id) {
+                const client = clients.find(c => c.id === id);
+                title.textContent = 'Edit Client';
+                document.getElementById('clientId').value = client.id;
+                document.getElementById('clientName').value = client.name;
+                document.getElementById('clientPlan').value = client.plan;
+                document.getElementById('clientNeeds').value = client.needs || '';
+                document.getElementById('clientAssignee').value = client.assignedTo || '';
+                document.getElementById('clientStatus').value = client.status;
+                document.getElementById('clientCallTime').value = client.callTime || '';
             } else {
-                briefsList.innerHTML = filtered.map(client => `
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">${client.name} - ${client.business || 'Client Brief'}</div>
-                            <span class="status-badge status-${client.status}">${client.status}</span>
-                        </div>
-                        <div style="color: var(--text-secondary); margin-bottom: 1rem;">
-                            📧 ${client.email} ${client.plan ? '• 💰 ' + client.plan : ''}
-                        </div>
-                        <button class="btn btn-small" onclick="viewBrief(${client.id})">📋 View Full Brief</button>
-                    </div>
-                `).join('');
+                title.textContent = 'Add Client';
+                document.getElementById('clientForm').reset();
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeClientModal() {
+            document.getElementById('clientModal').classList.remove('active');
+            editingClientId = null;
+        }
+
+        function saveClient(e) {
+            e.preventDefault();
+            
+            const id = editingClientId || Date.now();
+            const client = {
+                id: id,
+                name: document.getElementById('clientName').value,
+                plan: document.getElementById('clientPlan').value,
+                needs: document.getElementById('clientNeeds').value,
+                assignedTo: document.getElementById('clientAssignee').value ? parseInt(document.getElementById('clientAssignee').value) : null,
+                status: document.getElementById('clientStatus').value,
+                callTime: document.getElementById('clientCallTime').value || null
+            };
+
+            if (editingClientId) {
+                const index = clients.findIndex(c => c.id === editingClientId);
+                clients[index] = client;
+            } else {
+                clients.push(client);
+            }
+
+            saveData();
+            renderClients();
+            closeClientModal();
+        }
+
+        function editClient(id) {
+            openClientModal(id);
+        }
+
+        function deleteClient(id) {
+            if (confirm('Are you sure you want to delete this client?')) {
+                clients = clients.filter(c => c.id !== id);
+                saveData();
+                renderClients();
             }
         }
 
-        window.viewBrief = function(clientId) {
-            const client = clients.find(c => c.id === clientId);
-            if (!client) return;
-
-            const brief = `
-CLIENT BRIEF: ${client.name}
-${'='.repeat(50)}
-
-📧 Email: ${client.email}
-🏢 Business: ${client.business || 'N/A'}
-💰 Plan: ${client.plan || 'N/A'}
-📊 Status: ${client.status.toUpperCase()}
-
-WHAT THEY WANT:
-${client.needs || 'N/A'}
-
-HARDWARE:
-${client.hardware || 'N/A'}
-
-API KEYS AVAILABLE:
-${client.apiKeys || 'N/A'}
-
-CALL NOTES:
-${client.notes || 'N/A'}
-
-DELIVERABLES:
-${client.deliverables ? client.deliverables.map((d, i) => `${i + 1}. ${d}`).join('\n') : 'N/A'}
-
-${'='.repeat(50)}
-Generated: ${new Date().toLocaleString()}
-            `.trim();
-
-            document.getElementById('briefContent').innerHTML = `<div class="export-box">${brief}</div>`;
-            window.currentBrief = brief;
-            document.getElementById('briefModal').classList.add('active');
-        };
-
-        window.copyBrief = function() {
-            if (window.currentBrief) {
-                navigator.clipboard.writeText(window.currentBrief).then(() => {
-                    alert('Brief copied to clipboard!');
-                });
-            }
-        };
-
-        // Search functionality
-        document.getElementById('clientSearch')?.addEventListener('input', renderClients);
-        document.getElementById('briefSearch')?.addEventListener('input', renderBriefs);
-
-        window.filterClients = function() {
-            renderClients();
-        };
-
-        // Export/Import
-        window.exportData = function() {
-            const data = {
-                clients,
-                employees,
-                calls,
-                exportedAt: new Date().toISOString()
-            };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `openclaw-dashboard-${Date.now()}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-        };
-
-        window.importData = function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if (confirm('This will replace all current data. Continue?')) {
-                        clients = data.clients || [];
-                        employees = data.employees || [];
-                        calls = data.calls || [];
-                        saveToLocalStorage();
-                        syncToFirebase();
-                        render();
-                        alert('Data imported successfully!');
-                    }
-                } catch (err) {
-                    alert('Error importing data: ' + err.message);
-                }
-            };
-            reader.readAsText(file);
-        };
-
-        window.clearAllData = function() {
-            if (confirm('⚠️ This will delete ALL data permanently. Are you absolutely sure?')) {
-                if (confirm('Last chance! Really delete everything?')) {
-                    clients = [];
-                    employees = [];
-                    calls = [];
-                    saveToLocalStorage();
-                    syncToFirebase();
-                    render();
-                    alert('All data cleared.');
-                }
-            }
-        };
-
-        // Firebase integration
-        window.connectFirebase = async function() {
-            const apiKey = document.getElementById('firebaseApiKey').value;
-            const databaseUrl = document.getElementById('firebaseDatabaseUrl').value;
-
-            if (!apiKey || !databaseUrl) {
-                alert('Please enter both API key and database URL');
+        // Schedule functions
+        function renderSchedule() {
+            const summaryDiv = document.getElementById('callSummary');
+            const listDiv = document.getElementById('scheduleList');
+            
+            // Get scheduled calls
+            const scheduledCalls = clients.filter(c => c.callTime && c.status === 'scheduled');
+            
+            if (scheduledCalls.length === 0) {
+                summaryDiv.innerHTML = '<div class="empty-state">No calls scheduled yet.</div>';
+                listDiv.innerHTML = '';
                 return;
             }
 
-            try {
-                // Store credentials
-                localStorage.setItem('firebaseApiKey', apiKey);
-                localStorage.setItem('firebaseDatabaseUrl', databaseUrl);
-
-                // Initialize Firebase
-                const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js');
-                const { getDatabase, ref, set, onValue } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js');
-
-                const firebaseConfig = {
-                    apiKey: apiKey,
-                    databaseURL: databaseUrl
-                };
-
-                const app = initializeApp(firebaseConfig);
-                firebaseDB = getDatabase(app);
-                firebaseConnected = true;
-
-                updateFirebaseStatus(true);
-
-                // Sync data
-                syncToFirebase();
-
-                // Listen for changes
-                const dataRef = ref(firebaseDB, 'dashboard');
-                onValue(dataRef, (snapshot) => {
-                    const data = snapshot.val();
-                    if (data) {
-                        clients = data.clients || [];
-                        employees = data.employees || [];
-                        calls = data.calls || [];
-                        saveToLocalStorage();
-                        render();
-                    }
-                });
-
-                alert('✅ Connected to Firebase!');
-            } catch (error) {
-                console.error('Firebase connection error:', error);
-                alert('Failed to connect to Firebase: ' + error.message);
-                updateFirebaseStatus(false);
-            }
-        };
-
-        window.disconnectFirebase = function() {
-            firebaseConnected = false;
-            firebaseDB = null;
-            localStorage.removeItem('firebaseApiKey');
-            localStorage.removeItem('firebaseDatabaseUrl');
-            updateFirebaseStatus(false);
-            alert('Disconnected from Firebase');
-        };
-
-        async function syncToFirebase() {
-            if (!firebaseConnected || !firebaseDB) return;
-
-            try {
-                const { ref, set } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js');
-                const dataRef = ref(firebaseDB, 'dashboard');
-                await set(dataRef, {
-                    clients,
-                    employees,
-                    calls,
-                    lastSync: Date.now()
-                });
-            } catch (error) {
-                console.error('Firebase sync error:', error);
-            }
-        }
-
-        function updateFirebaseStatus(connected) {
-            const indicator = document.getElementById('firebaseIndicator');
-            const statusText = document.getElementById('firebaseStatusText');
+            // Count today's calls per employee
+            const today = new Date().toDateString();
+            const callCounts = {};
             
-            if (connected) {
-                indicator.className = 'firebase-connected';
-                statusText.textContent = 'Synced';
+            employees.forEach(emp => {
+                const todayCalls = scheduledCalls.filter(c => 
+                    c.assignedTo === emp.id && 
+                    new Date(c.callTime).toDateString() === today
+                ).length;
+                
+                if (todayCalls > 0) {
+                    callCounts[emp.name] = todayCalls;
+                }
+            });
+
+            // Render summary
+            if (Object.keys(callCounts).length > 0) {
+                summaryDiv.innerHTML = `
+                    <h3>Today's Calls</h3>
+                    <div class="call-counts">
+                        ${Object.entries(callCounts).map(([name, count]) => 
+                            `<div class="call-count-item"><strong>${name}</strong>: ${count} call${count > 1 ? 's' : ''}</div>`
+                        ).join('')}
+                    </div>
+                `;
             } else {
-                indicator.className = 'firebase-disconnected';
-                statusText.textContent = 'Offline';
+                summaryDiv.innerHTML = '<div style="color: #666;">No calls scheduled for today.</div>';
             }
+
+            // Sort by date
+            const sorted = [...scheduledCalls].sort((a, b) => 
+                new Date(a.callTime) - new Date(b.callTime)
+            );
+
+            // Render calls
+            listDiv.innerHTML = sorted.map(call => {
+                const assignee = employees.find(e => e.id === call.assignedTo);
+                const callDate = new Date(call.callTime);
+                const isToday = callDate.toDateString() === today;
+                
+                return `
+                    <div class="call-item ${isToday ? 'today' : ''}">
+                        <div class="call-header">
+                            <div class="call-client">${call.name}</div>
+                            <div class="call-time">${formatDateTime(call.callTime)}</div>
+                        </div>
+                        <div class="call-details">
+                            ${assignee ? assignee.name : 'Unassigned'} | $${call.plan} ${call.plan === '99' ? 'Basic' : call.plan === '199' ? 'Pro' : 'Pro+'} | ${call.needs || 'No details'}
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
-        // Auto-reconnect to Firebase on load
-        async function autoConnectFirebase() {
-            const apiKey = localStorage.getItem('firebaseApiKey');
-            const databaseUrl = localStorage.getItem('firebaseDatabaseUrl');
-
-            if (apiKey && databaseUrl) {
-                document.getElementById('firebaseApiKey').value = apiKey;
-                document.getElementById('firebaseDatabaseUrl').value = databaseUrl;
-                await connectFirebase();
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const today = now.toDateString();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const dateStr = date.toDateString();
+            const timeStr = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+            
+            if (dateStr === today) {
+                return `Today at ${timeStr}`;
+            } else if (dateStr === tomorrow.toDateString()) {
+                return `Tomorrow at ${timeStr}`;
+            } else {
+                return `${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} at ${timeStr}`;
             }
         }
 
         // Initialize
-        initializeData();
-        autoConnectFirebase();
+        loadData();
+        renderEmployees();
+        renderClients();
+        renderSchedule();
     </script>
 </body>
 </html>
