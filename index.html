@@ -1049,7 +1049,7 @@
 
             if (!firebaseEnabled) {
                 // Fallback to localStorage for admin
-                if (email === 'kitboonssocial@gmail.com') {
+                if (email === 'kitboonssocial@gmail.com' || email === 'jaidenlauckhk@gmail.com') {
                     currentUser = { email, isAdmin: true };
                     showDashboard();
                     return;
@@ -1064,16 +1064,22 @@
                 let authorizedEmails = snapshot.val() || {};
                 
                 // Auto-seed admin email if no authorized emails exist
-                if (Object.keys(authorizedEmails).length === 0 && email === 'kitboonssocial@gmail.com') {
-                    const key = email.replace(/\./g, '_');
-                    await db.ref(`authorized-emails/${key}`).set({ email, role: 'admin', addedAt: Date.now() });
-                    authorizedEmails[key] = { email, role: 'admin' };
+                const adminEmails = ['kitboonssocial@gmail.com', 'jaidenlauckhk@gmail.com'];
+                if (Object.keys(authorizedEmails).length === 0 && adminEmails.includes(email)) {
+                    // Seed both admin emails
+                    for (const ae of adminEmails) {
+                        const ak = ae.replace(/\./g, '_');
+                        if (!authorizedEmails[ak]) {
+                            await db.ref(`authorized-emails/${ak}`).set({ email: ae, role: 'admin', addedAt: Date.now() });
+                            authorizedEmails[ak] = { email: ae, role: 'admin' };
+                        }
+                    }
                 }
                 
                 if (authorizedEmails[email.replace(/\./g, '_')]) {
                     currentUser = { 
                         email, 
-                        isAdmin: email === 'kitboonssocial@gmail.com' 
+                        isAdmin: adminEmails.includes(email) 
                     };
                     showDashboard();
                     setupPresence();
@@ -1085,7 +1091,7 @@
             } catch (error) {
                 console.error('Login error:', error);
                 // Firebase failed — fallback to admin offline access
-                if (email === 'kitboonssocial@gmail.com') {
+                if (email === 'kitboonssocial@gmail.com' || email === 'jaidenlauckhk@gmail.com') {
                     currentUser = { email, isAdmin: true };
                     showDashboard();
                     return;
